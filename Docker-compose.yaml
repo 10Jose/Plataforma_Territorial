@@ -1,0 +1,187 @@
+services:
+  # ==================== BASES DE DATOS ====================
+
+  db-ingestion:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ingestion_user
+      POSTGRES_PASSWORD: ingestion_pass
+      POSTGRES_DB: ingestion_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata-ingestion:/var/lib/postgresql/data
+
+  db-transformation:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: transform_user
+      POSTGRES_PASSWORD: transform_pass
+      POSTGRES_DB: transform_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata-transformation:/var/lib/postgresql/data
+
+  db-analytics:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: analytics_user
+      POSTGRES_PASSWORD: analytics_pass
+      POSTGRES_DB: analytics_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata-analytics:/var/lib/postgresql/data
+
+  db-ml:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ml_user
+      POSTGRES_PASSWORD: ml_pass
+      POSTGRES_DB: ml_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata-ml:/var/lib/postgresql/data
+
+  # PostgreSQL para ms-recommendations
+  db-recommendations:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: rec_user
+      POSTGRES_PASSWORD: rec_pass
+      POSTGRES_DB: rec_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - pgdata-recommendations:/var/lib/postgresql/data
+
+  db-configuration:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: config_user
+      POSTGRES_PASSWORD: config_pass
+      POSTGRES_DB: config_db
+    ports:
+      - "5437:5432"
+    volumes:
+      - pgdata-configuration:/var/lib/postgresql/data
+
+  db-audit:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: audit_user
+      POSTGRES_PASSWORD: audit_pass
+      POSTGRES_DB: audit_db
+    ports:
+      - "5438:5432"
+    volumes:
+      - pgdata-audit:/var/lib/postgresql/data
+
+  # ==================== MICROSERVICIOS ====================
+
+  ms-ingestion:
+    build: ./services/ms-ingestion
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ingestion_user:ingestion_pass@db-ingestion:5432/ingestion_db
+    depends_on:
+      - db-ingestion
+
+  ms-transformation:
+    build: ./services/ms-transformation
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://transform_user:transform_pass@db-transformation:5432/transform_db
+      INGESTION_SERVICE_URL: http://ms-ingestion:8000
+    depends_on:
+      - db-transformation
+      - ms-ingestion
+
+  ms-analytics:
+    build: ./services/ms-analytics
+    ports:
+      - "8003:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://analytics_user:analytics_pass@db-analytics:5432/analytics_db
+      TRANSFORMATION_SERVICE_URL: http://ms-transformation:8000
+    depends_on:
+      - db-analytics
+      - ms-transformation
+
+  ms-ml:
+    build: ./services/ms-ml
+    ports:
+      - "8004:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ml_user:ml_pass@db-ml:5432/ml_db
+      ANALYTICS_SERVICE_URL: http://ms-analytics:8000
+    depends_on:
+      - db-ml
+      - ms-analytics
+
+  ms-recommendations:
+    build: ./services/ms-recommendations
+    ports:
+      - "8005:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://rec_user:rec_pass@db-recommendations:5432/rec_db
+      ANALYTICS_SERVICE_URL: http://ms-analytics:8000
+      ML_SERVICE_URL: http://ms-ml:8000
+    depends_on:
+      - db-recommendations
+      - ms-analytics
+      - ms-ml
+
+  ms-configuration:
+    build: ./services/ms-configuration
+    ports:
+      - "8006:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://config_user:config_pass@db-configuration:5432/config_db
+    depends_on:
+      - db-configuration
+
+  ms-audit:
+    build: ./services/ms-audit
+    ports:
+      - "8007:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://audit_user:audit_pass@db-audit:5432/audit_db
+    depends_on:
+      - db-audit
+
+  bff:
+    build: ./bff
+    ports:
+      - "8000:8000"
+    environment:
+      INGESTION_SERVICE_URL: http://ms-ingestion:8000
+      TRANSFORMATION_SERVICE_URL: http://ms-transformation:8000
+      ANALYTICS_SERVICE_URL: http://ms-analytics:8000
+      ML_SERVICE_URL: http://ms-ml:8000
+      RECOMMENDATIONS_SERVICE_URL: http://ms-recommendations:8000
+      CONFIGURATION_SERVICE_URL: http://ms-configuration:8000
+      AUDIT_SERVICE_URL: http://ms-audit:8000
+    depends_on:
+      - ms-ingestion
+      - ms-transformation
+      - ms-analytics
+      - ms-ml
+      - ms-recommendations
+      - ms-configuration
+      - ms-audit
+
+
+
+volumes:
+  pgdata-ingestion:
+  pgdata-transformation:
+  pgdata-analytics:
+  pgdata-ml:
+  pgdata-recommendations:
+  pgdata-configuration:
+  pgdata-audit:
