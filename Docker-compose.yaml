@@ -176,7 +176,6 @@ services:
       - ms-audit
 
 
-
 volumes:
   pgdata-ingestion:
   pgdata-transformation:

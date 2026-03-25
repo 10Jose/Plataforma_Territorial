@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from app.routers import ranking   # ← ¡CORREGIDO!
+
+from routers import ranking# ← ¡CORREGIDO!
 
 app = FastAPI(title="Analytics Service")
 

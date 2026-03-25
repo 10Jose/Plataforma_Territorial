@@ -14,5 +14,4 @@ def health():
 @app.on_event("startup")
 async def init_db():
     async with engine.begin() as conn:
-        # Ahora Base.metadata conoce los modelos porque se importaron
         await conn.run_sync(Base.metadata.create_all)

@@ -24,27 +24,23 @@ async def load_dataset(
             detail="Formato de archivo no válido. Solo se permiten archivos CSV."
         )
 
-    # 2. Validar MIME type (opcional, pero buena práctica)
+    # 2. Validar MIME type
     if file.content_type not in ["text/csv", "application/vnd.ms-excel"]:
         raise HTTPException(
             status_code=400,
             detail="El archivo no parece ser CSV. Verifique el contenido."
         )
 
+    # 3. Leer el contenido una sola vez
     contents = await file.read()
     if len(contents) == 0:
-        raise HTTPException(
-            status_code=400,
-            detail="El archivo está vacío (0 bytes)."
-        )
+        raise HTTPException(400, "El archivo está vacío (0 bytes).")
 
-
-    # 1. Leer el CSV con Pandas
+    # 4. Intentar leer con Pandas usando el mismo contents
     try:
-        contents = await file.read()
         df = pd.read_csv(io.BytesIO(contents))
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error reading CSV: {str(e)}")
+        raise HTTPException(400, f"Error reading CSV: {str(e)}")
 
     # 2. Validación básica: al menos una columna, no vacío
     if df.empty:

@@ -8,4 +8,4 @@ python-dotenv==1.0.0
 pandas==2.1.3
 numpy==1.26.2
 scikit-learn==1.3.1
-joblib==1.3.2          # para guardar/cargar modelos
+joblib==1.3.2

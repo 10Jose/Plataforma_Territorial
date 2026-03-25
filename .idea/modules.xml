@@ -8,7 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" filepath="$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/ms-ml/ms-ml.iml" filepath="$PROJECT_DIR$/services/ms-ml/ms-ml.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" filepath="$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" />
-      <module fileurl="file://$PROJECT_DIR$/services/ms-transformation/ms-trasformation.iml" filepath="$PROJECT_DIR$/services/ms-transformation/ms-trasformation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/ms-transformation/ms-transformation.iml" filepath="$PROJECT_DIR$/services/ms-transformation/ms-transformation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/plataforma_territorial.iml" filepath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" />
     </modules>
   </component>

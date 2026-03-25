@@ -5,7 +5,7 @@ class DatasetLoad(Base):
     __tablename__ = "dataset_loads"
     id = Column(Integer, primary_key=True, index=True)
     file_name = Column(String, nullable=False)
-    source_name = Column(String)
+    source_name = Column(String, nullable=False)
     source_type = Column(String, nullable=True)
     uploaded_at = Column(DateTime(timezone=True), server_default=func.now())
     uploaded_by = Column(String, nullable=True)

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bff/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/ranking.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/ms-analytics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/ms-analytics.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-audit/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-audit/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-audit/ms-audit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-audit/ms-audit.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-audit/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-configuration/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-configuration/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-configuration/ms-configuration.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-configuration/ms-configuration.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-configuration/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/infrastructure/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/infrastructure/database.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/ms-ml.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/ms-ml.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/ms-trasformation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/ms-transformation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/requirements.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;10Jose&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/10Jose/plataforma_territorial.git&quot;,
+    &quot;accountId&quot;: &quot;5b0af175-b2a0-4a32-a56d-0ae24f98c1e3&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3BNbbLlSytB9LTPJbaUAUBNfwUq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.Docker-compose.yaml.frontend: Compose Deployment.executor": "Run",
+    "Docker.Docker-compose.yaml.ms-analytics: Compose Deployment.executor": "Run",
+    "Docker.Docker-compose.yaml: Compose Deployment.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\services" />
+      <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\ms-analytics" />
+      <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\jjjj" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Docker.Docker-compose.yaml: Compose Deployment">
+    <configuration name="Docker-compose.yaml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="Docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="Docker-compose.yaml.frontend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="frontend" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="Docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="Docker-compose.yaml.ms-analytics: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="ms-analytics" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="Docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.Docker-compose.yaml: Compose Deployment" />
+        <item itemvalue="Docker.Docker-compose.yaml.ms-analytics: Compose Deployment" />
+        <item itemvalue="Docker.Docker-compose.yaml.frontend: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="" />
+      <created>1774332547129</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774332547129</updated>
+    </task>
+    <servers />
+  </component>
+</project>
