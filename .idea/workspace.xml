@@ -4,54 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="HU-01 completado + UI">
       <change beforePath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/load.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/zones.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bff/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/ranking.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/ms-analytics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/ms-analytics.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/ms-audit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-audit/ms-audit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/ms-configuration.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-configuration/ms-configuration.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/infrastructure/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/infrastructure/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/ms-ingestion.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ml/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ml/ms-ml.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/ms-ml.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-ml/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-recommendations/ms-recommendations.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-recommendations/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-transformation/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-transformation/ms-trasformation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/ms-transformation.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-transformation/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +42,9 @@
     <commands />
     <urls />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 2
@@ -93,27 +54,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.Docker-compose.yaml.frontend: Compose Deployment.executor": "Run",
-    "Docker.Docker-compose.yaml.ms-analytics: Compose Deployment.executor": "Run",
-    "Docker.Docker-compose.yaml: Compose Deployment.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.Docker-compose.yaml.frontend: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.Docker-compose.yaml.ms-analytics: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.Docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\services" />
@@ -185,6 +146,19 @@
       <option name="presentableId" value="Default" />
       <updated>1774332547129</updated>
     </task>
+    <task id="LOCAL-00001" summary="HU-01 completado + UI">
+      <option name="closed" value="true" />
+      <created>1774399459189</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774399459189</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="HU-01 completado + UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="HU-01 completado + UI" />
   </component>
 </project>
