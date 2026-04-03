@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './FileUploadModern.css';
+import ZonesList from './ZonesList';
+import { api } from '../services/api';  // ← importar api
 
 const FileUploadModern = () => {
   const [file, setFile] = useState(null);
@@ -7,6 +9,8 @@ const FileUploadModern = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [refreshZones, setRefreshZones] = useState(false);
+  const [syncing, setSyncing] = useState(false);  // ← agregar estado de sincronización
   const fileInputRef = useRef(null);
 
   const handleDrag = (e) => {
@@ -72,31 +76,16 @@ const FileUploadModern = () => {
     setError(null);
     setResult(null);
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${API_URL}/api/load`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      let data;
-      try {
-        data = await response.json();
-      } catch (jsonError) {
-        const text = await response.text();
-        data = { detail: text || `Error ${response.status}: ${response.statusText}` };
-      }
-
-      if (!response.ok) {
-        throw new Error(data.detail || `Error ${response.status}: ${response.statusText}`);
-      }
-
+      // Usar el interceptor api.loadFile
+      const data = await api.loadFile(file);
       setResult(data);
+      setRefreshZones(prev => !prev);
+      setSyncing(true);
+      setTimeout(() => setSyncing(false), 3000);
     } catch (err) {
-      setError(err.message);
+      // El error ya viene formateado por el interceptor
+      setError(err.detail || err.message || 'Error al cargar el archivo');
     } finally {
       setLoading(false);
     }
@@ -186,6 +175,14 @@ const FileUploadModern = () => {
             <span className="size-info">Tamaño máximo: 50MB</span>
           </div>
 
+          {/* Mensaje de sincronización */}
+          {syncing && (
+            <div className="syncing-message">
+              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>sync</span>
+              Sincronizando zonas con el servidor...
+            </div>
+          )}
+
           {/* Error Display */}
           {error && (
             <div className="error-message">
@@ -196,10 +193,56 @@ const FileUploadModern = () => {
           {/* Result Display */}
           {result && (
             <div className="success-message">
-              <h3>✅ Carga exitosa:</h3>
-              <pre>{JSON.stringify(result, null, 2)}</pre>
+              <h3>{result.status === 'already_loaded' ? '⚠️ Archivo ya cargado' : '✅ Carga exitosa:'}</h3>
+              <p><strong>Archivo:</strong> {result.filename}</p>
+              <p><strong>ID:</strong> {result.id}</p>
+              <p><strong>Total filas:</strong> {result.rows}</p>
+              <p><strong>Filas válidas:</strong> {result.valid_rows}</p>
+              <p><strong>Filas inválidas:</strong> {result.invalid_rows}</p>
+              {result.message && <p><strong>Mensaje:</strong> {result.message}</p>}
+
+              {result.errors && result.errors.length > 0 && (
+                <div className="error-summary">
+                  <details>
+                    <summary>
+                      ⚠️ Ver errores detallados ({result.errors.length} fila(s) con problemas)
+                    </summary>
+                    <div className="error-container">
+                      {result.errors.map((err, idx) => (
+                        <div key={idx} className="error-item">
+                          <div className="error-title">
+                            🔴 Fila {err.row + 1}
+                          </div>
+                          <ul className="error-list">
+                            {err.errors.map((error, i) => (
+                              <li key={i}>{error}</li>
+                            ))}
+                          </ul>
+                          <details>
+                            <summary className="error-data-summary">
+                              📄 Mostrar datos originales
+                            </summary>
+                            <pre className="error-data-pre">
+                              {JSON.stringify(err.row_data, null, 2)}
+                            </pre>
+                          </details>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                </div>
+              )}
+
+              <details style={{ marginTop: '1rem' }}>
+                <summary className="json-summary">
+                  📦 Ver respuesta JSON completa
+                </summary>
+                <pre className="json-pre">{JSON.stringify(result, null, 2)}</pre>
+              </details>
             </div>
           )}
+
+          <ZonesList refreshTrigger={refreshZones} />
         </div>
       </main>
 

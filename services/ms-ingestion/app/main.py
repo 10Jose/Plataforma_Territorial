@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.routers import data
 from app.infrastructure.database import engine, Base
-from app.domain import models   # ← importa el módulo que contiene tus modelos
+from app.domain import models
 
 app = FastAPI(title="Data Ingestion Service")
 

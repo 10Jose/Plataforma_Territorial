@@ -1,6 +1,7 @@
 import httpx
 import os
 from fastapi import UploadFile, HTTPException
+from typing import Optional
 import logging
 
 logger = logging.getLogger(__name__)
@@ -10,7 +11,7 @@ class IngestionClient:
         self.base_url = os.getenv("INGESTION_SERVICE_URL", "http://ms-ingestion:8000")
         logger.info(f"Cliente de ingesta inicializado con URL: {self.base_url}")
 
-    async def upload(self, file: UploadFile):
+    async def upload(self, file: UploadFile, uploaded_by: Optional[str] = None):
         logger.info(f"Procesando archivo: {file.filename}, tamaño: {file.size}")
         contents = await file.read()
         logger.info(f"Contenido leído: {len(contents)} bytes")
@@ -18,8 +19,17 @@ class IngestionClient:
         async with httpx.AsyncClient() as client:
             try:
                 files = {"file": (file.filename, contents, file.content_type)}
+                headers = {}
+                if uploaded_by:
+                    headers["X-User-Id"] = uploaded_by
+                    logger.info(f"Enviando header X-User-Id: {uploaded_by}")
+
                 logger.info(f"Enviando petición a {self.base_url}/data/load")
-                response = await client.post(f"{self.base_url}/data/load", files=files)
+                response = await client.post(
+                    f"{self.base_url}/data/load",
+                    files=files,
+                    headers=headers
+                )
 
                 logger.info(f"Respuesta recibida - status: {response.status_code}")
                 logger.info(f"Headers: {response.headers}")
@@ -51,3 +61,22 @@ class IngestionClient:
             except httpx.RequestError as e:
                 logger.error(f"Error de conexión con ms-ingestion: {str(e)}")
                 raise HTTPException(status_code=503, detail=f"No se pudo conectar con el servicio de ingesta: {str(e)}")
+
+    async def get_datasets(self, skip: int = 0, limit: int = 100, validation_status: Optional[str] = None):
+        params = {"skip": skip, "limit": limit}
+        if validation_status:
+            params["validation_status"] = validation_status
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{self.base_url}/data/datasets",
+                params=params
+            )
+            response.raise_for_status()
+            return response.json()
+
+    async def get_dataset_file(self, dataset_id: int):
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"{self.base_url}/data/file/{dataset_id}")
+            response.raise_for_status()
+            return response.content

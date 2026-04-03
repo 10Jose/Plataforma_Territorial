@@ -4,12 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="HU-01 completado + UI">
-      <change beforePath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/plataforma_territorial.iml" afterDir="false" />
+    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="HU-01 completado + UI actualización">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/routers/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/load.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/routers/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/zones.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bff/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUpload.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/app/domain/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,27 +68,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.Docker-compose.yaml.frontend: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Docker-compose.yaml.ms-analytics: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.Docker-compose.yaml.db-auth: Compose Deployment.executor": "Run",
+    "Docker.Docker-compose.yaml.frontend: Compose Deployment.executor": "Run",
+    "Docker.Docker-compose.yaml.ms-analytics: Compose Deployment.executor": "Run",
+    "Docker.Docker-compose.yaml: Compose Deployment.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\services" />
@@ -82,10 +97,23 @@
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\jjjj" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.Docker-compose.yaml: Compose Deployment">
+  <component name="RunManager" selected="Docker.Docker-compose.yaml.db-auth: Compose Deployment">
     <configuration name="Docker-compose.yaml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
+          <option name="sourceFilePath" value="Docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="Docker-compose.yaml.db-auth: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="db-auth" />
+            </list>
+          </option>
           <option name="sourceFilePath" value="Docker-compose.yaml" />
         </settings>
       </deployment>
@@ -125,6 +153,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.Docker-compose.yaml.db-auth: Compose Deployment" />
         <item itemvalue="Docker.Docker-compose.yaml: Compose Deployment" />
         <item itemvalue="Docker.Docker-compose.yaml.ms-analytics: Compose Deployment" />
         <item itemvalue="Docker.Docker-compose.yaml.frontend: Compose Deployment" />
@@ -154,11 +183,20 @@
       <option name="project" value="LOCAL" />
       <updated>1774399459189</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="HU-01 completado + UI actualización">
+      <option name="closed" value="true" />
+      <created>1774402344095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774402344095</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="HU-01 completado + UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="HU-01 completado + UI" />
+    <MESSAGE value="HU-01 completado + UI actualización" />
+    <option name="LAST_COMMIT_MESSAGE" value="HU-01 completado + UI actualización" />
   </component>
 </project>
