@@ -4,7 +4,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 # Configuración JWT
-SECRET_KEY = "pl4tf0rm4_territ0ri4l"  # ⚠️ CAMBIAR EN PRODUCCIÓN
+SECRET_KEY = "pl4tf0rm4_territ0ri4l"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1
 
@@ -34,7 +34,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 def decode_token(token: str) -> Optional[dict]:
-    """Decodifica un token JWT."""
+    """Decodifica token """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload

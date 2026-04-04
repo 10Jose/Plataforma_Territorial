@@ -26,7 +26,7 @@ const Register = ({ onSwitchToLogin }) => {
       setSuccess(true);
       setTimeout(() => onSwitchToLogin(), 2000);
     } catch (err) {
-      console.error('Registration failed:', err);
+      console.error('Registration failed:', err); //---
     } finally {
       setIsLoading(false);
     }
@@ -161,7 +161,7 @@ const Register = ({ onSwitchToLogin }) => {
 
         <div className="divider">
           <p className="text-sm text-on-surface-variant font-medium">
-            Already have an account?
+            Ya tienes una cuenta?
           </p>
           <button onClick={onSwitchToLogin} className="btn-outline">
             Sign In

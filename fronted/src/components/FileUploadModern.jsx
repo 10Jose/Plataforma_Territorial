@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './FileUploadModern.css';
 import ZonesList from './ZonesList';
-import { api } from '../services/api';  // ← importar api
+import { api } from '../services/api';
 
 const FileUploadModern = () => {
   const [file, setFile] = useState(null);
@@ -10,7 +10,7 @@ const FileUploadModern = () => {
   const [error, setError] = useState(null);
   const [dragActive, setDragActive] = useState(false);
   const [refreshZones, setRefreshZones] = useState(false);
-  const [syncing, setSyncing] = useState(false);  // ← agregar estado de sincronización
+  const [syncing, setSyncing] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleDrag = (e) => {
@@ -84,7 +84,6 @@ const FileUploadModern = () => {
       setSyncing(true);
       setTimeout(() => setSyncing(false), 3000);
     } catch (err) {
-      // El error ya viene formateado por el interceptor
       setError(err.detail || err.message || 'Error al cargar el archivo');
     } finally {
       setLoading(false);

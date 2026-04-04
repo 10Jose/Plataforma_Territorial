@@ -13,11 +13,10 @@ const Login = ({ onSwitchToRegister }) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // El backend espera username, pero usamos email como username por simplicidad
       await login(username, password);
       window.location.href = '/dashboard';
     } catch (err) {
-      // Error ya manejado en AuthContext
+      // Error manejado en AuthContext
     } finally {
       setIsLoading(false);
     }
@@ -28,7 +27,7 @@ const Login = ({ onSwitchToRegister }) => {
       <header className="flex flex-col items-center mb-12">
         <div className="text-center">
           <h2 className="font-headline font-bold text-3xl text-on-surface tracking-tight mb-2">
-            Bienvenido
+            Iniciar Sesión
           </h2>
           <p className="text-on-surface-variant font-medium">
             Accede y explora la mejor opción para tu negocio
@@ -100,10 +99,10 @@ const Login = ({ onSwitchToRegister }) => {
 
         <div className="divider">
           <p className="text-sm text-on-surface-variant font-medium">
-            Don't have an account yet?
+            No tienes una cuenta todavia?
           </p>
           <button onClick={onSwitchToRegister} className="btn-outline">
-            Create an Account
+            Crear una cuenta
           </button>
         </div>
       </div>
