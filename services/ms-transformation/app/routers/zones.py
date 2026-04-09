@@ -9,16 +9,19 @@ import logging
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+
 @router.get("/")
 async def get_zones(
         db: AsyncSession = Depends(get_db),
         skip: int = Query(0, ge=0, description="Número de registros a saltar"),
         limit: int = Query(100, ge=1, le=500, description="Número máximo de registros a retornar")
 ):
-
+    """
+    Obtiene la lista de zonas únicas disponibles con paginación.
+    """
     start_time = time.time()
 
-    # 1. Consulta paginada de zonas
+    # Consulta paginada de zonas
     result = await db.execute(
         select(TransformedZoneData.zone_code, TransformedZoneData.zone_name)
         .distinct()
@@ -28,17 +31,15 @@ async def get_zones(
     )
     zones = [{"code": code, "name": name} for code, name in result.all()]
 
-    # 2. Obtener total de zonas únicas (para paginación)
+    # Total de zonas únicas
     total_result = await db.execute(
         select(func.count(TransformedZoneData.zone_name.distinct()))
     )
     total = total_result.scalar()
 
-    # 3. Log de rendimiento
     elapsed = time.time() - start_time
     logger.info(f"GET /zones completado en {elapsed:.3f}s (skip={skip}, limit={limit}, total={total})")
 
-    # 4. Construir respuesta con metadatos de paginación
     return {
         "zones": zones,
         "total": total,

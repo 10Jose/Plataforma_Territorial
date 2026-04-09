@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="Sprint 1 completo">
+    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="Modificaciones adicionales">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/core/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/core/security.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/datasets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ingestion_client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/src/components/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/src/components/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/Register.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/domain/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/app/domain/validators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ingestion/app/routers/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/routers/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/routers/sync.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/routers/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/routers/zones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/services/ingestion_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/services/ingestion_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="repository" />
+    </option>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -33,12 +44,12 @@
     &quot;assignee&quot;: &quot;10Jose&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/10Jose/Plataforma_Territorial.git",
-    "accountId": "5b0af175-b2a0-4a32-a56d-0ae24f98c1e3"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/10Jose/Plataforma_Territorial.git&quot;,
+    &quot;accountId&quot;: &quot;5b0af175-b2a0-4a32-a56d-0ae24f98c1e3&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -187,13 +198,22 @@
       <option name="project" value="LOCAL" />
       <updated>1775174609237</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Modificaciones adicionales">
+      <option name="closed" value="true" />
+      <created>1775272921422</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775272921422</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="HU-01 completado + UI" />
     <MESSAGE value="HU-01 completado + UI actualización" />
     <MESSAGE value="Sprint 1 completo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sprint 1 completo" />
+    <MESSAGE value="Modificaciones adicionales" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modificaciones adicionales" />
   </component>
 </project>

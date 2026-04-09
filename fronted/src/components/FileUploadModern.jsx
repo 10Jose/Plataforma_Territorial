@@ -47,8 +47,8 @@ const FileUploadModern = () => {
       return;
     }
 
-    if (selectedFile.size > 50 * 1024 * 1024) {
-      setError('El archivo excede el tamaño máximo permitido de 50MB.');
+    if (selectedFile.size > 25 * 1024 * 1024) {
+      setError('El archivo excede el tamaño máximo permitido de 25MB.');
       setFile(null);
       return;
     }
@@ -171,7 +171,7 @@ const FileUploadModern = () => {
           <div className="meta-info">
             <span className="badge">Formatos soportados: .csv</span>
             <span className="separator">•</span>
-            <span className="size-info">Tamaño máximo: 50MB</span>
+            <span className="size-info">Tamaño máximo: 25MB</span>
           </div>
 
           {/* Mensaje de sincronización */}

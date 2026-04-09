@@ -1,101 +1,57 @@
+from typing import Any
 import pandas as pd
-
-REQUIRED_COLUMNS = ['zona', 'poblacion', 'ingreso', 'educacion', 'negocios']
-
-# Versión de las reglas de validación
-VALIDATION_RULES_VERSION = "1.0.0"  # Formato: mayor.menor.revisión
+from app.core.config import settings
 
 
-def convert_education_to_years(value):
-    """Convierte texto a nivel escolar"""
-    if value is None or pd.isna(value):
-        return None
+class ValidationRulesEngine:
 
-    # Si ya es número, usarlo directamente
-    try:
-        return float(value)
-    except (ValueError, TypeError):
-        pass
+    def __init__(self, config=None):
+        self.config = config or settings.VALIDATION_RULES
 
-    # Convertir a string y limpiar
-    text = str(value).lower().strip()
+    @property
+    def required_columns(self):
+        return self.config.required_columns
 
-    mapping = {
-        "ninguna": 0, "ninguno": 0,
-        "primaria": 5, "primaria incompleta": 3,
-        "secundaria": 11, "secundaria incompleta": 8,
-        "bachiller": 11, "bachillerato": 11,
-        "tecnica": 14, "tecnólogo": 14, "tecnologo": 14,
-        "universitaria": 16, "profesional": 16,
-        "postgrado": 18, "maestría": 18,
-        "doctorado": 20,
-    }
+    @property
+    def rules_version(self):
+        return self.config.rules_version
 
-    return mapping.get(text, None)
+    @property
+    def numeric_columns(self):
+        return self.config.numeric_columns
 
+    def convert_education_to_years(self, value: Any) -> float | None:
+        """
+        Convierte texto descriptivo a años de escolaridad.
+        
+        Args:
+            value: Valor a convertir (puede ser número o texto)
+            
+        Returns:
+            Años convertidos o None si no es válido
+        """
+        if value is None or pd.isna(value):
+            return None
 
-def validate_dataset(df: pd.DataFrame):
-    # Verificar que existan todas las columnas requeridas
-    missing = set(REQUIRED_COLUMNS) - set(df.columns)
-    if missing:
-        raise ValueError(f"Columnas faltantes: {missing}")
+        # Si ya es número, usarlo directamente
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            pass
 
-    # Copiar para no modificar el original
-    df_valid = df.copy()
+        text = str(value).lower().strip()
+        return self.config.education_mapping.get(text, None)
 
-    # Convertir columnas numéricas a número (coerce = errores a NaN)
-    numeric_cols = ['poblacion', 'ingreso', 'negocios']
-    for col in numeric_cols:
-        df_valid[col] = pd.to_numeric(df_valid[col], errors='coerce')
-
-    # Convertir educación (texto a años)
-    df_valid['educacion'] = df_valid['educacion'].apply(convert_education_to_years)
-
-    # Lista para almacenar errores por fila
-    errors = []
-
-    # Iterar fila por fila para identificar errores específicos
-    for idx, row in df_valid.iterrows():
-        row_errors = []
-
-        # Validar zona (no nula ni vacía)
-        if pd.isna(row['zona']) or str(row['zona']).strip() == '':
-            row_errors.append("zona vacía o nula")
-
-        # Validar poblacion, ingreso, negocios
-        for col in numeric_cols:
-            val = row[col]
-            original_val = df.loc[idx, col]
-
-            if pd.isna(val):
-                if not pd.isna(original_val) and str(original_val).strip() != '':
-                    row_errors.append(f"{col} debe ser un número válido (valor: '{original_val}')")
-                else:
-                    row_errors.append(f"{col} nulo o vacío")
-            elif val <= 0:
-                row_errors.append(f"{col} debe ser positivo (valor: {val})")
-
-        # Validar educación
-        educ_val = row['educacion']
-        original_educ = df.loc[idx, 'educacion']
-
-        if pd.isna(educ_val):
-            if not pd.isna(original_educ) and str(original_educ).strip() != '':
-                row_errors.append(f"educacion no se pudo convertir a años (valor: '{original_educ}')")
-            else:
-                row_errors.append("educacion nulo o vacío")
-        elif educ_val < 0:
-            row_errors.append(f"educacion debe ser positivo (valor: {educ_val})")
-
-        # Si hay errores, agregar a la lista
-        if row_errors:
-            errors.append({
-                "row": int(idx),
-                "row_data": df.loc[idx].to_dict(),
-                "errors": row_errors
-            })
-
-    valid_count = len(df) - len(errors)
-    invalid_count = len(errors)
-
-    return valid_count, invalid_count, errors, VALIDATION_RULES_VERSION
+    def validate_columns(self, df: pd.DataFrame) -> None:
+        """
+        Valida que existan todas las columnas requeridas.
+        
+        Args:
+            df: DataFrame a validar
+            
+        Raises:
+            ValueError: Si faltan columnas requeridas
+        """
+        missing = set(self.required_columns) - set(df.columns)
+        if missing:
+            raise ValueError(f"Columnas faltantes: {missing}")

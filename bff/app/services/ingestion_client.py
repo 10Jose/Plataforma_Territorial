@@ -79,4 +79,10 @@ class IngestionClient:
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{self.base_url}/data/file/{dataset_id}")
             response.raise_for_status()
-            return response.content
+
+            content_disposition = response.headers.get("content-disposition", "")
+            filename = f"dataset_{dataset_id}.csv"
+            if "filename=" in content_disposition:
+                filename = content_disposition.split("filename=")[-1].strip('"')
+
+            return response.content, filename

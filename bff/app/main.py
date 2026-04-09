@@ -23,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+app.include_router(datasets.router, prefix="/api/datasets", tags=["Datasets"])
 app.include_router(load.router, prefix="/api/load", tags=["Load"])
 app.include_router(zones.router, prefix="/api/zones", tags=["Zones"])
 app.include_router(datasets.router, prefix="/api/datasets", tags=["Datasets"])
@@ -104,9 +105,6 @@ async def health():
 
 @app.get("/health/summary")
 async def health_summary():
-    """
-    Endpoint de resumen rápido (solo estados principales).
-    """
     status = {"status": "ok", "services": {}}
 
     services = {
