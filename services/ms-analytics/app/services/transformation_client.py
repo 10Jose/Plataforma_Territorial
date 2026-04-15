@@ -10,10 +10,7 @@ logger = logging.getLogger(__name__)
 class TransformationClient(ITransformationClient):
 
     def __init__(self, base_url: Optional[str] = None):
-        """
-        Args:
-            base_url: URL base del servicio (inyectada)
-        """
+
         self.base_url = base_url or os.getenv(
             "TRANSFORMATION_SERVICE_URL",
             "http://ms-transformation:8000"
