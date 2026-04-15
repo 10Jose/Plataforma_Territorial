@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Optional
 from dataclasses import dataclass
 
 
@@ -16,7 +16,7 @@ class ZoneTransformerInterface(ABC):
     """Abstracción para el transformador de zonas."""
 
     @abstractmethod
-    def transform_row(self, row: Any) -> Dict | None:
+    def transform_row(self, row: Any) -> Optional[Dict]:
         """Transforma una fila del CSV."""
         pass
 

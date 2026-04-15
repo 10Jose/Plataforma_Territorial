@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import './FileUploadModern.css';
 import ZonesList from './ZonesList';
+import IndicatorsTable from './IndicatorsTable';
 import { api } from '../services/api';
 
 const FileUploadModern = () => {
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' o 'indicators'
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -27,7 +29,6 @@ const FileUploadModern = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
       validateAndSetFile(droppedFile);
@@ -40,19 +41,16 @@ const FileUploadModern = () => {
       setFile(null);
       return;
     }
-
     if (selectedFile.size === 0) {
       setError('El archivo está vacío (0 bytes). Por favor selecciona un archivo con datos.');
       setFile(null);
       return;
     }
-
     if (selectedFile.size > 25 * 1024 * 1024) {
       setError('El archivo excede el tamaño máximo permitido de 25MB.');
       setFile(null);
       return;
     }
-
     setError(null);
     setFile(selectedFile);
     setResult(null);
@@ -71,13 +69,10 @@ const FileUploadModern = () => {
       setError('Por favor selecciona un archivo.');
       return;
     }
-
     setLoading(true);
     setError(null);
     setResult(null);
-
     try {
-      // Usar el interceptor api.loadFile
       const data = await api.loadFile(file);
       setResult(data);
       setRefreshZones(prev => !prev);
@@ -96,152 +91,161 @@ const FileUploadModern = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
+      {/* Header con pestañas */}
       <header className="header">
         <nav className="nav">
           <div className="logo">Plataforma Territorial</div>
+          <div className="nav-tabs">
+            <button
+              className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <span className="material-symbols-outlined">dashboard</span>
+              Dashboard
+            </button>
+            <button
+              className={`tab-button ${activeTab === 'indicators' ? 'active' : ''}`}
+              onClick={() => setActiveTab('indicators')}
+            >
+              <span className="material-symbols-outlined">analytics</span>
+              Indicadores
+            </button>
+          </div>
         </nav>
       </header>
 
       {/* Main Content */}
       <main className="main-content">
         <div className="container">
-          {/* Hero */}
-          <div className="hero">
-            <h1>Analítica Territorial</h1>
-            <p>Carga tu archivo CSV con datos territoriales y obtén análisis inteligentes para tu negocio.</p>
-          </div>
-
-          {/* Upload Zone */}
-          <form onSubmit={handleSubmit}>
-            <div
-              className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              <div className="upload-content">
-                <div className="icon-circle">
-                  <span className="material-symbols-outlined upload-icon">cloud_upload</span>
-                </div>
-                <div>
-                  <div className="upload-text">
-                    {file ? file.name : 'Arrastra y suelta tu archivo .csv aquí'}
-                  </div>
-                  <div className="upload-subtext">
-                    {file ? `${(file.size / 1024).toFixed(2)} KB` : 'o haz clic en el botón para buscar'}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="primary-button"
-                  onClick={triggerFileInput}
-                  disabled={loading}
-                >
-                  <span className="material-symbols-outlined">upload_file</span>
-                  {loading ? 'Subiendo...' : 'Seleccionar archivo'}
-                </button>
+          {/* ========== DASHBOARD TAB ========== */}
+          {activeTab === 'dashboard' && (
+            <>
+              {/* Hero */}
+              <div className="hero">
+                <h1>Analítica Territorial</h1>
+                <p>Carga tu archivo CSV con datos territoriales y obtén análisis inteligentes para tu negocio.</p>
               </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv"
-                onChange={handleFileChange}
-                className="hidden-input"
-                disabled={loading}
-              />
-            </div>
 
-            {/* Submit Button */}
-            {file && (
-              <div className="flex-center mt-6">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="submit-button"
+              {/* Upload Zone */}
+              <form onSubmit={handleSubmit}>
+                <div
+                  className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
                 >
-                  {loading ? 'Procesando...' : 'Subir archivo'}
-                </button>
-              </div>
-            )}
-          </form>
-
-          {/* Meta Info */}
-          <div className="meta-info">
-            <span className="badge">Formatos soportados: .csv</span>
-            <span className="separator">•</span>
-            <span className="size-info">Tamaño máximo: 25MB</span>
-          </div>
-
-          {/* Mensaje de sincronización */}
-          {syncing && (
-            <div className="syncing-message">
-              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>sync</span>
-              Sincronizando zonas con el servidor...
-            </div>
-          )}
-
-          {/* Error Display */}
-          {error && (
-            <div className="error-message">
-              <strong>Error:</strong> {error}
-            </div>
-          )}
-
-          {/* Result Display */}
-          {result && (
-            <div className="success-message">
-              <h3>{result.status === 'already_loaded' ? '⚠️ Archivo ya cargado' : '✅ Carga exitosa:'}</h3>
-              <p><strong>Archivo:</strong> {result.filename}</p>
-              <p><strong>ID:</strong> {result.id}</p>
-              <p><strong>Total filas:</strong> {result.rows}</p>
-              <p><strong>Filas válidas:</strong> {result.valid_rows}</p>
-              <p><strong>Filas inválidas:</strong> {result.invalid_rows}</p>
-              {result.message && <p><strong>Mensaje:</strong> {result.message}</p>}
-
-              {result.errors && result.errors.length > 0 && (
-                <div className="error-summary">
-                  <details>
-                    <summary>
-                      ⚠️ Ver errores detallados ({result.errors.length} fila(s) con problemas)
-                    </summary>
-                    <div className="error-container">
-                      {result.errors.map((err, idx) => (
-                        <div key={idx} className="error-item">
-                          <div className="error-title">
-                            🔴 Fila {err.row + 1}
-                          </div>
-                          <ul className="error-list">
-                            {err.errors.map((error, i) => (
-                              <li key={i}>{error}</li>
-                            ))}
-                          </ul>
-                          <details>
-                            <summary className="error-data-summary">
-                              📄 Mostrar datos originales
-                            </summary>
-                            <pre className="error-data-pre">
-                              {JSON.stringify(err.row_data, null, 2)}
-                            </pre>
-                          </details>
-                        </div>
-                      ))}
+                  <div className="upload-content">
+                    <div className="icon-circle">
+                      <span className="material-symbols-outlined upload-icon">cloud_upload</span>
                     </div>
+                    <div>
+                      <div className="upload-text">
+                        {file ? file.name : 'Arrastra y suelta tu archivo .csv aquí'}
+                      </div>
+                      <div className="upload-subtext">
+                        {file ? `${(file.size / 1024).toFixed(2)} KB` : 'o haz clic en el botón para buscar'}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="primary-button"
+                      onClick={triggerFileInput}
+                      disabled={loading}
+                    >
+                      <span className="material-symbols-outlined">upload_file</span>
+                      {loading ? 'Subiendo...' : 'Seleccionar archivo'}
+                    </button>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv"
+                    onChange={handleFileChange}
+                    className="hidden-input"
+                    disabled={loading}
+                  />
+                </div>
+
+                {file && (
+                  <div className="flex-center mt-6">
+                    <button type="submit" disabled={loading} className="submit-button">
+                      {loading ? 'Procesando...' : 'Subir archivo'}
+                    </button>
+                  </div>
+                )}
+              </form>
+
+              {/* Meta Info */}
+              <div className="meta-info">
+                <span className="badge">Formatos soportados: .csv</span>
+                <span className="separator">•</span>
+                <span className="size-info">Tamaño máximo: 25MB</span>
+              </div>
+
+              {/* Mensaje de sincronización */}
+              {syncing && (
+                <div className="syncing-message">
+                  <span className="material-symbols-outlined">sync</span>
+                  Sincronizando zonas con el servidor...
+                </div>
+              )}
+
+              {/* Error Display */}
+              {error && (
+                <div className="error-message">
+                  <strong>Error:</strong> {error}
+                </div>
+              )}
+
+              {/* Result Display */}
+              {result && (
+                <div className="success-message">
+                  <h3>{result.status === 'already_loaded' ? '⚠️ Archivo ya cargado' : '✅ Carga exitosa:'}</h3>
+                  <p><strong>Archivo:</strong> {result.filename}</p>
+                  <p><strong>ID:</strong> {result.id}</p>
+                  <p><strong>Total filas:</strong> {result.rows}</p>
+                  <p><strong>Filas válidas:</strong> {result.valid_rows}</p>
+                  <p><strong>Filas inválidas:</strong> {result.invalid_rows}</p>
+                  {result.message && <p><strong>Mensaje:</strong> {result.message}</p>}
+
+                  {result.errors && result.errors.length > 0 && (
+                    <div className="error-summary">
+                      <details>
+                        <summary>⚠️ Ver errores detallados ({result.errors.length} fila(s) con problemas)</summary>
+                        <div className="error-container">
+                          {result.errors.map((err, idx) => (
+                            <div key={idx} className="error-item">
+                              <div className="error-title">🔴 Fila {err.row + 1}</div>
+                              <ul className="error-list">
+                                {err.errors.map((error, i) => <li key={i}>{error}</li>)}
+                              </ul>
+                              <details>
+                                <summary className="error-data-summary">📄 Mostrar datos originales</summary>
+                                <pre className="error-data-pre">{JSON.stringify(err.row_data, null, 2)}</pre>
+                              </details>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    </div>
+                  )}
+                  <details style={{ marginTop: '1rem' }}>
+                    <summary className="json-summary">📦 Ver respuesta JSON completa</summary>
+                    <pre className="json-pre">{JSON.stringify(result, null, 2)}</pre>
                   </details>
                 </div>
               )}
 
-              <details style={{ marginTop: '1rem' }}>
-                <summary className="json-summary">
-                  📦 Ver respuesta JSON completa
-                </summary>
-                <pre className="json-pre">{JSON.stringify(result, null, 2)}</pre>
-              </details>
-            </div>
+              {/* Lista de zonas */}
+              <ZonesList refreshTrigger={refreshZones} />
+            </>
           )}
 
-          <ZonesList refreshTrigger={refreshZones} />
+          {/* ========== INDICADORES TAB ========== */}
+          {activeTab === 'indicators' && (
+            <IndicatorsTable />
+          )}
         </div>
       </main>
 
@@ -254,16 +258,10 @@ const FileUploadModern = () => {
         <div className="footer-content">
           <div className="copyright">© 2026 Todos los derechos reservados.</div>
           <div className="footer-links">
-            <button
-              onClick={() => alert('Política de Privacidad - Próximamente')}
-              className="link-button"
-            >
+            <button onClick={() => alert('Política de Privacidad - Próximamente')} className="link-button">
               Política de Privacidad
             </button>
-            <button
-              onClick={() => alert('Términos de Servicio - Próximamente')}
-              className="link-button"
-            >
+            <button onClick={() => alert('Términos de Servicio - Próximamente')} className="link-button">
               Términos de Servicio
             </button>
           </div>

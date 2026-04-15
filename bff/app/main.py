@@ -1,12 +1,9 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from app.routers import load
-from app.routers import zones, indicators, ranking, recommendations
-from app.routers import datasets
+from app.routers import zones, indicators, ranking, recommendations, load, datasets, auth
 import httpx
 import os
 import logging
-from app.routers import auth
 from app.infrastructure.database import engine, Base
 from app.domain import models
 

@@ -1,6 +1,5 @@
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
-// Función para formatear errores como string
 const formatError = (data, response) => {
   if (data.detail && Array.isArray(data.detail)) {
     return data.detail.map(err => err.msg).join(', ');
@@ -21,7 +20,7 @@ const handleResponse = async (response) => {
       const data = await response.json();
       errorMessage = formatError(data, response);
     } catch {
-      // Si no se puede parsear JSON, usar mensaje por defecto
+
     }
     throw new Error(errorMessage);
   }
@@ -32,32 +31,25 @@ export const api = {
   async loadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
-
     const token = localStorage.getItem('token');
     const headers = {};
-
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-
-    // ✅ Usar URL con barra al final para evitar redirección 307
     const response = await fetch(`${API_URL}/api/load/`, {
       method: 'POST',
       headers,
       body: formData,
     });
-
     return handleResponse(response);
   },
 
   async getZones(skip = 0, limit = 100) {
     const token = localStorage.getItem('token');
     const headers = {};
-
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-
     const response = await fetch(`${API_URL}/api/zones/?skip=${skip}&limit=${limit}`, {
       headers,
     });
@@ -69,15 +61,64 @@ export const api = {
     if (validationStatus) {
       url += `&validation_status=${validationStatus}`;
     }
-
     const token = localStorage.getItem('token');
     const headers = {};
-
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-
     const response = await fetch(url, { headers });
+    return handleResponse(response);
+  },
+
+  // ========== INDICADORES ==========
+  async getIndicators(zoneCode = null) {
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    let url = `${API_URL}/api/indicators/`;
+    if (zoneCode) {
+      url += `?zone_code=${zoneCode}`;
+    }
+    const response = await fetch(url, { headers });
+    return handleResponse(response);
+  },
+
+  async calculateIndicators() {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    const response = await fetch(`${API_URL}/api/indicators/calculate`, {
+      method: 'POST',
+      headers,
+    });
+    return handleResponse(response);
+  },
+
+  // ========== SCORING ==========
+  async getRanking() {
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const response = await fetch(`${API_URL}/api/ranking/`, { headers });
+    return handleResponse(response);
+  },
+
+  async calculateScoring() {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    const response = await fetch(`${API_URL}/api/scoring/calculate`, {
+      method: 'POST',
+      headers,
+    });
     return handleResponse(response);
   }
 };

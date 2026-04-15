@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { validatePassword, getStrengthColor, getStrengthLabel } from '../utils/passwordValidator';
 import '../styles/auth.css';
 
 const Register = ({ onSwitchToLogin }) => {
@@ -12,21 +13,56 @@ const Register = ({ onSwitchToLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [touched, setTouched] = useState({ password: false, confirm: false });
   const { register, error } = useAuth();
+
+  // Validar contraseña en tiempo real
+  useEffect(() => {
+    if (formData.password) {
+      const validation = validatePassword(formData.password);
+      setPasswordValidation(validation);
+    } else {
+      setPasswordValidation(null);
+    }
+  }, [formData.password]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const isPasswordValid = () => {
+    return passwordValidation?.isValid || false;
+  };
+
+  const doPasswordsMatch = () => {
+    return formData.password && confirmPassword && formData.password === confirmPassword;
+  };
+
+  const isFormValid = () => {
+    return formData.username.length >= 3 &&
+           formData.email.includes('@') &&
+           formData.email.includes('.') &&
+           isPasswordValid() &&
+           doPasswordsMatch();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isFormValid()) {
+      setTouched({ password: true, confirm: true });
+      return;
+    }
+
     setIsLoading(true);
     try {
       await register(formData);
       setSuccess(true);
       setTimeout(() => onSwitchToLogin(), 2000);
     } catch (err) {
-      console.error('Registration failed:', err); //---
+      console.error('Registration failed:', err);
     } finally {
       setIsLoading(false);
     }
@@ -79,8 +115,12 @@ const Register = ({ onSwitchToLogin }) => {
                 value={formData.username}
                 onChange={handleChange}
                 required
+                minLength={3}
               />
             </div>
+            {formData.username && formData.username.length < 3 && (
+              <p className="text-error text-xs mt-1">Mínimo 3 caracteres</p>
+            )}
           </div>
 
           {/* Email Field */}
@@ -128,6 +168,7 @@ const Register = ({ onSwitchToLogin }) => {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
+                onBlur={() => setTouched({ ...touched, password: true })}
                 required
               />
               <button
@@ -140,6 +181,83 @@ const Register = ({ onSwitchToLogin }) => {
                 </span>
               </button>
             </div>
+
+            {/* Password Strength Indicator */}
+            {formData.password && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="h-1.5 flex-1 rounded-full bg-gray-200 overflow-hidden">
+                    <div
+                      className="h-full transition-all duration-300"
+                      style={{
+                        width: `${passwordValidation?.strength || 0}%`,
+                        backgroundColor: getStrengthColor(passwordValidation?.strength || 0)
+                      }}
+                    />
+                  </div>
+                  <span
+                    className="text-xs font-medium"
+                    style={{ color: getStrengthColor(passwordValidation?.strength || 0) }}
+                  >
+                    {getStrengthLabel(passwordValidation?.strength || 0)}
+                  </span>
+                </div>
+
+                {/* Validation Checklist */}
+                {touched.password && passwordValidation && (
+                  <div className="validation-checklist">
+                    <CheckItem
+                      passed={passwordValidation.checks.minLength}
+                      label="8+ caracteres"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.hasUpperCase}
+                      label="Una mayúscula"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.hasLowerCase}
+                      label="Una minúscula"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.hasNumber}
+                      label="Un número"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.hasSpecial}
+                      label="Un carácter especial"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.noSequences}
+                      label="Sin secuencias"
+                    />
+                    <CheckItem
+                      passed={passwordValidation.checks.noRepetition}
+                      label="Sin repeticiones"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Confirm Password Field */}
+          <div className="form-group">
+            <label className="form-label">Confirmar Contraseña *</label>
+            <div className="input-wrapper">
+              <span className="material-symbols-outlined input-icon">lock</span>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="input-field"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                onBlur={() => setTouched({ ...touched, confirm: true })}
+                required
+              />
+            </div>
+            {touched.confirm && confirmPassword && !doPasswordsMatch() && (
+              <p className="text-error text-xs mt-1">Las contraseñas no coinciden</p>
+            )}
           </div>
 
           {/* Error Display */}
@@ -151,7 +269,11 @@ const Register = ({ onSwitchToLogin }) => {
 
           {/* Submit Button */}
           <div className="pt-2">
-            <button type="submit" className="btn-primary" disabled={isLoading}>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={isLoading || (touched.password && !isFormValid())}
+            >
               {isLoading ? <div className="spinner"></div> : null}
               Crear Cuenta
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -171,5 +293,15 @@ const Register = ({ onSwitchToLogin }) => {
     </div>
   );
 };
+
+// Componente auxiliar para items de validación
+const CheckItem = ({ passed, label }) => (
+  <div className={`check-item ${passed ? 'passed' : 'failed'}`}>
+    <span className="material-symbols-outlined text-sm">
+      {passed ? 'check_circle' : 'cancel'}
+    </span>
+    <span>{label}</span>
+  </div>
+);
 
 export default Register;

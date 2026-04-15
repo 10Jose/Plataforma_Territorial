@@ -6,7 +6,6 @@ from app.core.exceptions import TransformationException
 
 router = APIRouter()
 
-
 @router.post("/zones")
 async def sync_zones(db: AsyncSession = Depends(get_db)):
     """
@@ -18,7 +17,7 @@ async def sync_zones(db: AsyncSession = Depends(get_db)):
 
         return {
             "message": "Sincronización completada",
-            "dataset_id": None,  # Se podría obtener del resultado si se necesita
+            "dataset_id": None,
             "transformation_run_id": None,
             "zones_processed": len(result.zones_data),
             "inserted": result.inserted_count,
@@ -28,4 +27,5 @@ async def sync_zones(db: AsyncSession = Depends(get_db)):
     except TransformationException as e:
         raise e
     except Exception as e:
+        logger.exception("Error en sync_zones")
         raise HTTPException(500, detail=f"Error interno: {str(e)}")
