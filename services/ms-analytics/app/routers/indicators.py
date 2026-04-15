@@ -15,7 +15,6 @@ router = APIRouter()
 @router.post("/calculate")
 async def calculate_indicators(db: AsyncSession = Depends(get_db)):
     try:
-        # ✅ Compatible: mismo constructor, ahora con inyección opcional
         service = IndicatorsService(db)
         result = await service.calculate_indicators()
         return result
@@ -34,7 +33,6 @@ async def get_indicators(
         zone_code: Optional[str] = None
 ):
     try:
-        # ✅ Compatible: mismo constructor
         service = IndicatorsService(db)
 
         query = select(IndicatorResult).order_by(IndicatorResult.zone_name)
@@ -53,7 +51,6 @@ async def get_indicators(
                 "income": i.income_indicator,
                 "education": i.education_indicator,
                 "competition": i.competition_indicator,
-                # ✅ Compatible: mismo método
                 "competition_level": service.get_competition_level(i.competition_indicator),
                 "calculated_at": i.calculated_at.isoformat() if i.calculated_at else None
             }
