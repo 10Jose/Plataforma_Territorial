@@ -10,7 +10,6 @@ router = APIRouter()
 @router.post("/scale")
 async def run_scaling(db: AsyncSession = Depends(get_db)):
     try:
-        # ✅ Compatible: mismo constructor
         service = AnalyticsService(db)
         result = await service.run_scaling()
         return result
