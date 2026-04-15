@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 class IndicatorsService:
-    """Servicio para calcular indicadores territoriales."""
 
     def __init__(
             self,
@@ -31,10 +30,7 @@ class IndicatorsService:
         self.classifier = classifier or CompetitionClassifier()
 
     def get_competition_level(self, value: float) -> str:
-        """
-        Clasifica el nivel de competencia según el valor numérico.
-        Mantenido por compatibilidad con código existente.
-        """
+
         return self.classifier.get_competition_level(value)
 
     async def _fetch_transformed_data(self) -> List[Dict]:
