@@ -45,12 +45,7 @@ class AnalyticsService:
         return data
 
     async def run_scaling(self) -> Dict:
-        """
-        Ejecuta el proceso completo de reescalado.
-
-        Returns:
-            Diccionario con resultados de la operación
-        """
+    
         # 1. Crear registro de ejecución
         execution_id = await self.execution_service.create_execution(
             self.scaler.rules_engine.method
