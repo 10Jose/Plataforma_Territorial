@@ -34,7 +34,7 @@ const AuthContainer = () => {
 
       <footer className="footer">
         <div className="footer-content">
-          <div className="copyright">© 2024 Territorial Analytics. All rights reserved.</div>
+          <div className="copyright">© 2026 Territorial Analytics. All rights reserved.</div>
           <div className="footer-links">
             <a href="#" className="footer-link">Privacy Policy</a>
             <a href="#" className="footer-link">Terms of Service</a>
@@ -46,7 +46,6 @@ const AuthContainer = () => {
   );
 };
 
-// Dashboard protegido (solo después de login)
 const Dashboard = () => {
   const { user, logout } = useAuth();
 

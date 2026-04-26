@@ -1,0 +1,357 @@
+.ranking-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.ranking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.ranking-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.ranking-subtitle {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.ranking-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.toggle-slider {
+  width: 44px;
+  height: 24px;
+  background: #cbd5e1;
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: #006944;
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  left: 22px;
+}
+
+.toggle-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* Filter Select */
+.filter-select {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+  color: #1e293b;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+/* Chart */
+.chart-container {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bar-label {
+  width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rank-medal {
+  font-size: 1.25rem;
+  width: 28px;
+  text-align: center;
+}
+
+.bar-zone {
+  font-weight: 500;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-wrapper {
+  flex: 1;
+  height: 32px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.75rem;
+  transition: width 0.5s ease;
+}
+
+.bar-fill.opportunity-high {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.bar-fill.opportunity-medium {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.bar-fill.opportunity-low {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.bar-value {
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Table */
+.table-container {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ranking-table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.ranking-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ranking-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.ranking-table tbody tr.rank-first {
+  background: linear-gradient(90deg, #fffbeb 0%, transparent 100%);
+}
+
+.ranking-table tbody tr.rank-second {
+  background: linear-gradient(90deg, #f8fafc 0%, transparent 100%);
+}
+
+.ranking-table tbody tr.rank-third {
+  background: linear-gradient(90deg, #fef2f2 0%, transparent 100%);
+}
+
+.rank-cell {
+  width: 60px;
+}
+
+.rank-badge {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.rank-badge.rank-first {
+  background: #fffbeb;
+  color: #b45309;
+  font-size: 1.25rem;
+}
+
+.rank-badge.rank-second {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 1.25rem;
+}
+
+.rank-badge.rank-third {
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 1.25rem;
+}
+
+.zone-name {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.score-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.opportunity-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.opportunity-high {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.opportunity-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.opportunity-low {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.contribution-positive {
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.empty-state .material-symbols-outlined {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #64748b;
+}
+
+/* Loading */
+.ranking-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.spinner-large {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #006944;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error */
+.error-message {
+  background: #fee2e2;
+  border: 1px solid #dc2626;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}

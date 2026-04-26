@@ -7,6 +7,7 @@ from app.services.competition_classifier import CompetitionClassifier
 from app.services.scaling_service import DataScaler
 from app.services.scaling_execution_service import ScalingExecutionService
 from app.services.scaled_data_repository import ScaledDataRepository
+from app.services.configuration_client import ConfigurationClient
 
 
 def get_transformation_client() -> TransformationClient:
@@ -32,6 +33,11 @@ def get_scaling_execution_service(db: AsyncSession) -> ScalingExecutionService:
 def get_scaled_data_repository(db: AsyncSession) -> ScaledDataRepository:
     """Provee una instancia de ScaledDataRepository."""
     return ScaledDataRepository(db)
+
+
+def get_configuration_client() -> ConfigurationClient:
+    """Provee una instancia de ConfigurationClient."""
+    return ConfigurationClient()
 
 
 async def get_indicators_service(

@@ -26,6 +26,11 @@ class Settings:
         "http://ms-transformation:8000"
     )
 
+    CONFIGURATION_SERVICE_URL: str = os.getenv(
+        "CONFIGURATION_SERVICE_URL",
+        "http://ms-configuration:8000"
+    )
+
     # Usar default_factory para valores mutables
     SCALING: ScalingConfig = field(default_factory=ScalingConfig)
     API_VERSION: str = "1.0.0"

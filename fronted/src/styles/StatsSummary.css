@@ -1,0 +1,143 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(171, 173, 174, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-decoration {
+  position: absolute;
+  right: -1rem;
+  top: -1rem;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  filter: blur(2rem);
+  transition: all 0.3s;
+}
+
+.stat-card-general .stat-decoration {
+  background: rgba(0, 105, 68, 0.05);
+}
+
+.stat-card-general:hover .stat-decoration {
+  background: rgba(0, 105, 68, 0.1);
+}
+
+.stat-card-opportunity .stat-decoration {
+  background: rgba(0, 104, 81, 0.05);
+}
+
+.stat-card-opportunity:hover .stat-decoration {
+  background: rgba(0, 104, 81, 0.1);
+}
+
+.stat-card-performance .stat-decoration {
+  background: rgba(0, 101, 115, 0.05);
+}
+
+.stat-card-performance:hover .stat-decoration {
+  background: rgba(0, 101, 115, 0.1);
+}
+
+.stat-card-best .stat-decoration {
+  background: rgba(62, 253, 173, 0.1);
+}
+
+.stat-card-best:hover .stat-decoration {
+  background: rgba(62, 253, 173, 0.15);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-icon {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.stat-card-general .stat-icon {
+  color: #006944;
+  background: rgba(0, 105, 68, 0.1);
+}
+
+.stat-card-opportunity .stat-icon {
+  color: #006851;
+  background: rgba(0, 104, 81, 0.1);
+}
+
+.stat-card-performance .stat-icon {
+  color: #006573;
+  background: rgba(0, 101, 115, 0.1);
+}
+
+.stat-card-best .stat-icon {
+  color: #006944;
+  background: rgba(62, 253, 173, 0.2);
+}
+
+.stat-icon.filled {
+  font-variation-settings: 'FILL' 1;
+}
+
+.stat-badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stat-content {
+  position: relative;
+  z-index: 1;
+}
+
+.stat-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: #2c2f30;
+  line-height: 1.2;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

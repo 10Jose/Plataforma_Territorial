@@ -3,7 +3,6 @@ from app.domain.interfaces import ICompetitionClassifier
 
 
 class CompetitionClassifier(ICompetitionClassifier):
-    """Clasificador de nivel de competencia basado en umbrales configurables."""
 
     DEFAULT_THRESHOLDS: Dict[str, float] = {
         "Alta": 400,

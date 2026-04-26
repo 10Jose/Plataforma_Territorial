@@ -5,13 +5,11 @@ from app.domain.interfaces import IScalingExecutionService
 
 
 class ScalingExecutionService(IScalingExecutionService):
-    """Servicio para gestionar ejecuciones de reescalado."""
 
     def __init__(self, db: AsyncSession):
         self.db = db
 
     async def create_execution(self, method: str) -> int:
-        """Crea una nueva ejecución y retorna su ID."""
         execution = ScalingExecution(
             method=method,
             status="processing"

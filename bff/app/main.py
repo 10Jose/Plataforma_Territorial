@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from app.routers import zones, indicators, ranking, recommendations, load, datasets, auth
+from app.routers import zones, indicators, ranking, recommendations, load, datasets, auth, configuration,scoring
 import httpx
 import os
 import logging
 from app.infrastructure.database import engine, Base
 from app.domain import models
+from app.routers.analytics import router as analytics_router
+from app.routers.audit import router as audit_router
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +29,10 @@ app.include_router(datasets.router, prefix="/api/datasets", tags=["Datasets"])
 app.include_router(indicators.router, prefix="/api/indicators", tags=["Indicators"])
 app.include_router(ranking.router, prefix="/api/ranking", tags=["Ranking"])
 app.include_router(recommendations.router, prefix="/api/recommendations", tags=["Recommendations"])
+app.include_router(configuration.router, prefix="/api/configuration", tags=["Configuration"])
+app.include_router(scoring.router, prefix="/api/scoring", tags=["Scoring"])
+app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
+app.include_router(audit_router, prefix="/api/audit", tags=["Audit"])
 
 
 @app.get("/health")
@@ -142,7 +148,11 @@ async def root():
             "datasets": "/api/datasets",
             "indicators": "/api/indicators",
             "ranking": "/api/ranking",
-            "recommendations": "/api/recommendations"
+            "recommendations": "/api/recommendations",
+            "configuration": "/api/configuration",
+            "analytics": "/api/analytics",
+            "scoring": "/api/scoring",
+            "audit": "/api/audit"
         }
     }
 

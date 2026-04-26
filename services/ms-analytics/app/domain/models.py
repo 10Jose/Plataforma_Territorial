@@ -65,3 +65,46 @@ class IndicatorResult(Base):
         Index('ix_indicator_results_zone_code', 'zone_code'),
         Index('ix_indicator_results_transformation_run_id', 'transformation_run_id'),
     )
+
+class ScoreExecution(Base):
+    __tablename__ = "score_executions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    scaling_execution_id = Column(Integer, nullable=True)
+    business_profile_id = Column(Integer, nullable=True)
+    formula_version = Column(String, default="1.0.0")
+    weights_json = Column(JSON, nullable=True)
+    status = Column(String, default="pending")
+    started_at = Column(DateTime(timezone=True), server_default=func.now())
+    finished_at = Column(DateTime(timezone=True), nullable=True)
+
+    __table_args__ = (
+        Index('ix_score_executions_scaling_execution_id', 'scaling_execution_id'),
+    )
+
+
+class ZoneScore(Base):
+    __tablename__ = "zone_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    score_execution_id = Column(Integer, ForeignKey("score_executions.id"), nullable=False)
+    zone_code = Column(String, nullable=False)
+    zone_name = Column(String, nullable=False)
+
+    # Score calculado (0-100)
+    score_value = Column(Float, nullable=False)
+
+    population_contribution = Column(Float, nullable=True)
+    income_contribution = Column(Float, nullable=True)
+    education_contribution = Column(Float, nullable=True)
+    competition_penalty = Column(Float, nullable=True)
+
+    # Nivel de oportunidad
+    opportunity_level = Column(String, nullable=True)  # Alta, Media, Baja
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = (
+        Index('ix_zone_scores_zone_code', 'zone_code'),
+        Index('ix_zone_scores_score_execution_id', 'score_execution_id'),
+    )

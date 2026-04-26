@@ -47,7 +47,7 @@ const IndicatorsTable = () => {
       await new Promise(resolve => setTimeout(resolve, 300));
       await fetchIndicators();
     } catch (err) {
-      // Si es "No hay datos", NO mostrar error, mostrar vista vacía
+      // Si es "No hay datos", se muestra vista vacía
       if (err.message.includes('No hay datos') || err.message.includes('404')) {
         setIndicators([]);
         setStats({
@@ -56,7 +56,7 @@ const IndicatorsTable = () => {
           populationTrend: '+12%',
           incomeUnit: 'Anual'
         });
-        setError(null); // ← Esto evita que se muestre el mensaje de error
+        setError(null);
       } else {
         setError(err.message || 'Error al actualizar indicadores');
       }

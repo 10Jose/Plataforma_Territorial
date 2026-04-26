@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import FileUploadModern from './components/FileUploadModern';
+import ConfigurationPanel from './components/ConfigurationPanel';
 import './styles/auth.css';
 
 const AuthContainer = () => {
@@ -81,6 +82,7 @@ function App() {
           <Route path="/login" element={<AuthContainer />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/configuration" element={<ConfigurationPanel />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

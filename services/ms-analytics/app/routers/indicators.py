@@ -1,5 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.infrastructure.database import get_db
@@ -12,12 +13,19 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+class CalculateRequest(BaseModel):
+    user_id: Optional[int] = None
+    username: Optional[str] = None
+
+
 @router.post("/calculate")
-async def calculate_indicators(db: AsyncSession = Depends(get_db)):
+async def calculate_indicators(request: CalculateRequest,db: AsyncSession = Depends(get_db)):
     try:
-        # ✅ Compatible: mismo constructor, ahora con inyección opcional
         service = IndicatorsService(db)
-        result = await service.calculate_indicators()
+        result = await service.calculate_indicators(
+            user_id=request.user_id,
+            username=request.username
+        )
         return result
     except NoDataError as e:
         raise e
@@ -34,7 +42,6 @@ async def get_indicators(
         zone_code: Optional[str] = None
 ):
     try:
-        # ✅ Compatible: mismo constructor
         service = IndicatorsService(db)
 
         query = select(IndicatorResult).order_by(IndicatorResult.zone_name)
@@ -53,7 +60,6 @@ async def get_indicators(
                 "income": i.income_indicator,
                 "education": i.education_indicator,
                 "competition": i.competition_indicator,
-                # ✅ Compatible: mismo método
                 "competition_level": service.get_competition_level(i.competition_indicator),
                 "calculated_at": i.calculated_at.isoformat() if i.calculated_at else None
             }

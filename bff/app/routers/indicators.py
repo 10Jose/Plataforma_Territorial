@@ -33,7 +33,10 @@ async def calculate_indicators(
 ):
     try:
         client = AnalyticsClient()
-        result = await client.calculate_indicators()
+        result = await client.calculate_indicators(
+            user_id = current_user.id,
+            username = current_user.username
+        )
         return result
 
     except httpx.HTTPStatusError as e:

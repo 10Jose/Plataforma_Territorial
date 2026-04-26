@@ -5,7 +5,6 @@ from app.domain.interfaces import IScaledDataRepository
 
 
 class ScaledDataRepository(IScaledDataRepository):
-    """Repositorio para datos reescalados."""
 
     def __init__(self, db: AsyncSession):
         self.db = db

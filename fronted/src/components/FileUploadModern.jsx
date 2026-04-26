@@ -2,7 +2,12 @@ import React, { useState, useRef } from 'react';
 import './FileUploadModern.css';
 import ZonesList from './ZonesList';
 import IndicatorsTable from './IndicatorsTable';
+import ConfigurationPanel from './ConfigurationPanel';
 import { api } from '../services/api';
+import ScoringTable from './ScoringTable';
+import RankingTable from './RankingTable';
+import AuditPanel from './AuditPanel';
+import ZoneComparison from './ZoneComparison';
 
 const FileUploadModern = () => {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' o 'indicators'
@@ -110,6 +115,47 @@ const FileUploadModern = () => {
               <span className="material-symbols-outlined">analytics</span>
               Indicadores
             </button>
+
+            <button
+                className={`tab-button ${activeTab === 'configuration' ? 'active' : ''}`}
+                onClick={() => setActiveTab('configuration')}
+            >
+               <span className="material-symbols-outlined">tune</span>
+               Configuración
+            </button>
+
+             <button
+                className={`tab-button ${activeTab === 'scoring' ? 'active' : ''}`}
+                onClick={() => setActiveTab('scoring')}
+             >
+                <span className="material-symbols-outlined">score</span>
+                Scoring
+             </button>
+
+             <button
+                className={`tab-button ${activeTab === 'ranking' ? 'active' : ''}`}
+                onClick={() => setActiveTab('ranking')}
+             >
+                <span className="material-symbols-outlined">leaderboard</span>
+                Ranking
+             </button>
+
+             <button
+               className={`tab-button ${activeTab === 'audit' ? 'active' : ''}`}
+               onClick={() => setActiveTab('audit')}
+             >
+               <span className="material-symbols-outlined">history</span>
+               Auditoría
+             </button>
+
+             <button
+               className={`tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
+               onClick={() => setActiveTab('comparison')}
+             >
+               <span className="material-symbols-outlined">compare</span>
+               Comparación
+             </button>
+
           </div>
         </nav>
       </header>
@@ -246,6 +292,15 @@ const FileUploadModern = () => {
           {activeTab === 'indicators' && (
             <IndicatorsTable />
           )}
+          {activeTab === 'configuration' && (
+             <ConfigurationPanel />
+          )}
+
+          {activeTab === 'scoring' && <ScoringTable />}
+          {activeTab === 'ranking' && <RankingTable />}
+          {activeTab === 'audit' && <AuditPanel />}
+          {activeTab === 'comparison' && <ZoneComparison />}
+
         </div>
       </main>
 

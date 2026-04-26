@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete
 from typing import Dict, Optional
 from app.domain.interfaces import (
     ITransformationClient,
@@ -6,11 +7,15 @@ from app.domain.interfaces import (
     IScalingExecutionService,
     IScaledDataRepository
 )
+from app.domain.models import ScaledZoneData
 from app.services.transformation_client import TransformationClient
 from app.services.scaling_service import DataScaler
 from app.services.scaling_execution_service import ScalingExecutionService
 from app.services.scaled_data_repository import ScaledDataRepository
 from app.core.exceptions import NoDataError
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class AnalyticsService:
@@ -23,14 +28,6 @@ class AnalyticsService:
             execution_service: Optional[IScalingExecutionService] = None,
             repository: Optional[IScaledDataRepository] = None
     ):
-        """
-        Args:
-            db: Sesión de base de datos
-            transformation_client: Cliente para ms-transformation
-            scaler: Servicio de reescalado
-            execution_service: Servicio de ejecuciones
-            repository: Repositorio de datos reescalados
-        """
         self.db = db
         self.transformation_client = transformation_client or TransformationClient()
         self.scaler = scaler or DataScaler()
@@ -45,12 +42,12 @@ class AnalyticsService:
         return data
 
     async def run_scaling(self) -> Dict:
-        """
-        Ejecuta el proceso completo de reescalado.
+        """Ejecuta el proceso completo de reescalado."""
 
-        Returns:
-            Diccionario con resultados de la operación
-        """
+        await self.db.execute(delete(ScaledZoneData))
+        await self.db.commit()
+        logger.info("Datos reescalados anteriores eliminados")
+
         # 1. Crear registro de ejecución
         execution_id = await self.execution_service.create_execution(
             self.scaler.rules_engine.method

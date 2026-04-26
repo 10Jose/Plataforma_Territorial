@@ -124,9 +124,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://analytics_user:analytics_pass@db-analytics:5432/analytics_db
       TRANSFORMATION_SERVICE_URL: http://ms-transformation:8000
+      CONFIGURATION_SERVICE_URL:  http://ms-configuration:8000
     depends_on:
       - db-analytics
       - ms-transformation
+      - ms-configuration
 
   ms-ml:
     build: ./services/ms-ml

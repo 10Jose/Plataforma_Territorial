@@ -2,33 +2,35 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, delete
 from typing import List, Dict, Optional
 import logging
+import uuid
 from app.domain.models import IndicatorResult
 from app.domain.interfaces import ITransformationClient, ICompetitionClassifier
 from app.services.transformation_client import TransformationClient
 from app.services.competition_classifier import CompetitionClassifier
+from app.services.audit_client import AuditClient
 from app.core.exceptions import NoDataError
 
 logger = logging.getLogger(__name__)
 
 
 class IndicatorsService:
-    """Servicio para calcular indicadores territoriales."""
 
     def __init__(
             self,
             db: AsyncSession,
             transformation_client: Optional[ITransformationClient] = None,
-            classifier: Optional[ICompetitionClassifier] = None
+            classifier: Optional[ICompetitionClassifier] = None,
+            audit_client: Optional[AuditClient] = None
     ):
         """
         Args:
-            db: Sesión de base de datos
-            transformation_client: Cliente para ms-transformation (inyectado)
             classifier: Clasificador de competencia (inyectado)
+            audit_client: Cliente de auditoría (inyectado)
         """
         self.db = db
         self.transformation_client = transformation_client or TransformationClient()
         self.classifier = classifier or CompetitionClassifier()
+        self.audit_client = audit_client or AuditClient("ms-analytics")
 
     def get_competition_level(self, value: float) -> str:
         """
@@ -78,14 +80,37 @@ class IndicatorsService:
         await self.db.commit()
         return count
 
-    async def calculate_indicators(self) -> Dict:
+    async def calculate_indicators(
+            self,
+            user_id: Optional[int] = None,
+            username: Optional[str] = None
+    ) -> Dict:
         """Calcula indicadores para todas las zonas."""
+        trace_id = str(uuid.uuid4())
+
+        # Registrar inicio
+        await self.audit_client.log_event(
+            event_type="indicators_calculate_started",
+            user_id=user_id,
+            username=username,
+            trace_id=trace_id        )
+
         try:
             transformed_data = await self._fetch_transformed_data()
         except NoDataError:
             await self.db.execute(delete(IndicatorResult))
             await self.db.commit()
             logger.info("Indicadores eliminados porque no hay datos transformados")
+
+            # Registrar error
+            await self.audit_client.log_event(
+                event_type="indicators_calculate_failed",
+                user_id=user_id,
+                username=username,
+                trace_id=trace_id,
+                status="error",
+                details={"reason": "no_transformed_data"}
+            )
             raise
 
         transformation_run_id = transformed_data[0].get("transformation_run_id") if transformed_data else None
@@ -111,8 +136,19 @@ class IndicatorsService:
 
         saved_count = await self._save_indicators(transformation_run_id, indicators)
 
+        # Registrar éxito
+        await self.audit_client.log_event(
+            event_type="indicators_calculate_completed",
+            reference_id=str(transformation_run_id),
+            user_id=user_id,
+            username=username,
+            trace_id=trace_id,
+            details={"zones_processed": saved_count}
+        )
+
         return {
             "status": "completed",
             "zones_processed": saved_count,
-            "indicators": indicators
+            "indicators": indicators,
+            "trace_id": trace_id
         }

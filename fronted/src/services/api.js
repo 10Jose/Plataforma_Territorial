@@ -98,27 +98,156 @@ export const api = {
     return handleResponse(response);
   },
 
-  // ========== SCORING ==========
-  async getRanking() {
+  // ========== CONFIGURACIÓN ==========
+  async getProfiles() {
     const token = localStorage.getItem('token');
-    const headers = {};
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    const response = await fetch(`${API_URL}/api/ranking/`, { headers });
+    const response = await fetch(`${API_URL}/api/configuration/profiles`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
     return handleResponse(response);
   },
 
+  async getActiveProfile() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/profiles/active`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async createProfile(profileData) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/profiles`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profileData)
+    });
+    return handleResponse(response);
+  },
+
+  async updateProfile(profileId, profileData) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/profiles/${profileId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profileData)
+    });
+    return handleResponse(response);
+  },
+
+  async activateProfile(profileId) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/profiles/${profileId}/activate`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getActiveWeights() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/weights/active`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async deleteProfile(profileId) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/configuration/profiles/${profileId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  // ========== SCORING ==========
   async calculateScoring() {
     const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    };
     const response = await fetch(`${API_URL}/api/scoring/calculate`, {
       method: 'POST',
-      headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    return handleResponse(response);
+  },
+
+  async getScores(zoneCode = null) {
+    const token = localStorage.getItem('token');
+    let url = `${API_URL}/api/scoring/scores`;
+    if (zoneCode) {
+      url += `/${zoneCode}`;
+    }
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  // ========== RANKING ==========
+  async getRanking(limit = null, opportunityLevel = null) {
+    const token = localStorage.getItem('token');
+    let url = `${API_URL}/api/scoring/ranking`;
+    const params = [];
+    if (limit) params.push(`limit=${limit}`);
+    if (opportunityLevel) params.push(`opportunity_level=${opportunityLevel}`);
+    if (params.length) url += `?${params.join('&')}`;
+
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  // ========== AUDITORÍA ==========
+  async getAuditEvents(serviceName = null, eventType = null, limit = 100, offset = 0) {
+    const token = localStorage.getItem('token');
+    let url = `${API_URL}/api/audit/events?limit=${limit}&offset=${offset}`;
+    if (serviceName) url += `&service_name=${serviceName}`;
+    if (eventType) url += `&event_type=${eventType}`;
+
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getAuditTrace(traceId) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/audit/events/trace/${traceId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getAuditStats() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/audit/stats`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  // ========== COMPARACIÓN ==========
+  async compareZones(zoneCodes) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/scoring/compare`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ zone_codes: zoneCodes })
     });
     return handleResponse(response);
   }
+
 };
