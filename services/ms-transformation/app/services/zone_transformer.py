@@ -1,5 +1,5 @@
 import pandas as pd
-import unicodedata  # ← mover aquí, al inicio
+import unicodedata
 from typing import Dict, Any, Optional
 import logging
 
@@ -23,9 +23,17 @@ class ZoneTransformer(ZoneTransformerInterface):
         name = ' '.join(name.split())
         return name
 
+    def _normalize_for_code(self, name: str) -> str:
+        """Normaliza el nombre para usarlo en zone_code."""
+        normalized = unicodedata.normalize('NFKD', name)
+        normalized = normalized.encode('ASCII', 'ignore').decode('ASCII')
+        normalized = normalized.lower().strip()
+        normalized = normalized.replace(' ', '_')
+        return normalized
+
     def _get_negocios_value(self, row: Any) -> float:
         """
-        Extrae y valida el valor de negocios (por defecto 0).
+        Extrae y valida el valor de negocios por defecto 0.
         """
         negocios_raw = row.get("negocios")
         if negocios_raw is None or pd.isna(negocios_raw) or str(negocios_raw).strip() == "":
@@ -35,7 +43,7 @@ class ZoneTransformer(ZoneTransformerInterface):
         except (ValueError, TypeError):
             return 0
 
-    def transform_row(self, row: Any) -> Optional[Dict]:
+    def transform_row(self, row: Any, global_index: int = None) -> Optional[Dict]:
         """
         Transforma una fila del CSV en el formato requerido.
         """
@@ -52,8 +60,13 @@ class ZoneTransformer(ZoneTransformerInterface):
 
         negocios = self._get_negocios_value(row)
 
+        if global_index is not None:
+            zone_code = f"{global_index}_{self._normalize_for_code(zone_name_raw)}"
+        else:
+            zone_code = str(row.get("codigo", row.get("zona_id", row.name)))
+
         return {
-            "zone_code": str(row.get("codigo", row.get("zona_id", row.name))),
+            "zone_code": zone_code,
             "zone_name": zone_name_normalized,
             "population_density": float(row["poblacion"]),
             "average_income": float(row["ingreso"]),

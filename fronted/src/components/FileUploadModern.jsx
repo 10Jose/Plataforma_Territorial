@@ -8,6 +8,7 @@ import ScoringTable from './ScoringTable';
 import RankingTable from './RankingTable';
 import AuditPanel from './AuditPanel';
 import ZoneComparison from './ZoneComparison';
+import MLPanel from './MLPanel';
 
 const FileUploadModern = () => {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' o 'indicators'
@@ -156,6 +157,14 @@ const FileUploadModern = () => {
                Comparación
              </button>
 
+             <button
+               className={`tab-button ${activeTab === 'ml' ? 'active' : ''}`}
+               onClick={() => setActiveTab('ml')}
+             >
+               <span className="material-symbols-outlined">model_training</span>
+               ML
+             </button>
+
           </div>
         </nav>
       </header>
@@ -300,6 +309,7 @@ const FileUploadModern = () => {
           {activeTab === 'ranking' && <RankingTable />}
           {activeTab === 'audit' && <AuditPanel />}
           {activeTab === 'comparison' && <ZoneComparison />}
+          {activeTab === 'ml' && <MLPanel />}
 
         </div>
       </main>

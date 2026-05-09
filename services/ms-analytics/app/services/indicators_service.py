@@ -35,7 +35,6 @@ class IndicatorsService:
     def get_competition_level(self, value: float) -> str:
         """
         Clasifica el nivel de competencia según el valor numérico.
-        Mantenido por compatibilidad con código existente.
         """
         return self.classifier.get_competition_level(value)
 
@@ -61,6 +60,7 @@ class IndicatorsService:
                 existing.income_indicator = item["income"]
                 existing.education_indicator = item["education"]
                 existing.competition_indicator = item["competition"]
+                existing.competition_level = item.get("competition_level")
                 existing.composite_indicator_json = item.get("composite", {})
                 existing.calculated_at = func.now()
             else:
@@ -72,6 +72,7 @@ class IndicatorsService:
                     income_indicator=item["income"],
                     education_indicator=item["education"],
                     competition_indicator=item["competition"],
+                    competition_level=item.get("competition_level"),
                     composite_indicator_json=item.get("composite", {})
                 )
                 self.db.add(record)
@@ -93,7 +94,8 @@ class IndicatorsService:
             event_type="indicators_calculate_started",
             user_id=user_id,
             username=username,
-            trace_id=trace_id        )
+            trace_id=trace_id
+        )
 
         try:
             transformed_data = await self._fetch_transformed_data()
@@ -112,6 +114,12 @@ class IndicatorsService:
                 details={"reason": "no_transformed_data"}
             )
             raise
+
+        competition_values = [
+            zone.get("other_variables_json", {}).get("negocios", 0)
+            for zone in transformed_data
+        ]
+        self.classifier = CompetitionClassifier(competition_values)
 
         transformation_run_id = transformed_data[0].get("transformation_run_id") if transformed_data else None
 

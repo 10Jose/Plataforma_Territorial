@@ -813,18 +813,18 @@ indicators-title {
 }
 
 .competition-high {
-  background-color: #5ffcce;
-  color: #005d48;
+  background-color: #fb5151;
+  color: #991b1b;
 }
 
 .competition-medium {
-  background-color: #dadddf;
+  background-color: #fef3c7;
   color: #2c2f30;
 }
 
 .competition-low {
-  background-color: #fb5151;
-  color: #570008;
+  background-color: #d1fae5;
+  color: #065f46;
 }
 
 /* Zone dots */

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, logger
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database import get_db
 from app.services.sync_service import SyncService

@@ -1,7 +1,7 @@
 import pandas as pd
 import io
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 from typing import List, Dict, Tuple
 
 from app.core.config import settings
@@ -83,22 +83,30 @@ class SyncService:
         except Exception as e:
             raise CSVReadError(str(e))
 
-    def _transform_dataframe(self, df: pd.DataFrame) -> List[Dict]:
+    async def _transform_dataframe(self, db: AsyncSession, df: pd.DataFrame) -> List[Dict]:
         """
         Transforma todas las filas del DataFrame.
 
         Args:
+            db: Sesión de base de datos
             df: DataFrame a transformar
 
         Returns:
             Lista de zonas transformadas
         """
+        # Obtener índice global inicial
+        stmt = select(func.count()).select_from(TransformedZoneData)
+        result = await db.execute(stmt)
+        global_index = (result.scalar() or 0) + 1
+
         zones_data = []
         for idx, row in df.iterrows():
             try:
-                transformed = self.transformer.transform_row(row)
+                # Pasar índice global al transformador
+                transformed = self.transformer.transform_row(row, global_index)
                 if transformed is not None:
                     zones_data.append(transformed)
+                    global_index += 1
                 else:
                     logger.info(f"Fila {idx} omitida por datos inválidos")
             except Exception as e:
@@ -172,7 +180,7 @@ class SyncService:
                 )
                 db.add(transformed)
                 inserted_count += 1
-                logger.info(f"Nueva zona insertada: {zone['zone_name']}")
+                logger.info(f"Nueva zona insertada: {zone['zone_name']} con code={zone['zone_code']}")
 
         await db.commit()
         return inserted_count, updated_count
@@ -198,7 +206,7 @@ class SyncService:
         self.rules_engine.validate_required_columns(df, required)
 
         # 4. Transformar datos
-        zones_data = self._transform_dataframe(df)
+        zones_data = await self._transform_dataframe(db, df)
 
         # 5. Persistir en BD
         inserted_count, updated_count = await self._persist_zones(

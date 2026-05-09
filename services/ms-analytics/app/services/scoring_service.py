@@ -145,6 +145,9 @@ class ScoringService:
                 }
             )
 
+            # ✅ ENTRENAR MODELO ML AUTOMÁTICAMENTE
+            await self._auto_train_ml_model()
+
             return {
                 "status": "completed",
                 "execution_id": execution_id,
@@ -167,6 +170,24 @@ class ScoringService:
                 await self.repository.update_execution_status(execution_id, "failed")
             raise e
 
+    async def _auto_train_ml_model(self):
+        """Entrena el modelo ML automáticamente después del scoring."""
+        try:
+            import httpx
+            ml_url = "http://ms-ml:8000"
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    f"{ml_url}/ml/train",
+                    json={"algorithm": "random_forest"}
+                )
+                if response.status_code == 200:
+                    logger.info("✅ Modelo ML reentrenado automáticamente después del scoring")
+                else:
+                    logger.warning(f"⚠️ Entrenamiento ML respondió con {response.status_code}")
+        except httpx.ConnectError:
+            logger.warning("⚠️ No se pudo conectar con ms-ml para reentrenar el modelo")
+        except Exception as e:
+            logger.warning(f"⚠️ No se pudo reentrenar el modelo ML: {e}")
     async def get_scores(self, zone_code: Optional[str] = None) -> List[Dict]:
         """Obtiene los scores calculados."""
         execution = await self.repository.get_latest_execution()

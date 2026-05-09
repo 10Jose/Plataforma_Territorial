@@ -58,6 +58,7 @@ class IndicatorResult(Base):
     income_indicator = Column(Float, nullable=True)
     education_indicator = Column(Float, nullable=True)
     competition_indicator = Column(Float, nullable=True)
+    competition_level = Column(String, nullable=True)
     composite_indicator_json = Column(JSON, nullable=True)
     calculated_at = Column(DateTime(timezone=True), server_default=func.now())
 

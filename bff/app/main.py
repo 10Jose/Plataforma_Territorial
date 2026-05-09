@@ -8,6 +8,7 @@ from app.infrastructure.database import engine, Base
 from app.domain import models
 from app.routers.analytics import router as analytics_router
 from app.routers.audit import router as audit_router
+from app.routers.ml import router as ml_router
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,7 @@ app.include_router(configuration.router, prefix="/api/configuration", tags=["Con
 app.include_router(scoring.router, prefix="/api/scoring", tags=["Scoring"])
 app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
 app.include_router(audit_router, prefix="/api/audit", tags=["Audit"])
+app.include_router(ml_router, prefix="/api/ml", tags=["ML"])
 
 
 @app.get("/health")
@@ -152,7 +154,8 @@ async def root():
             "configuration": "/api/configuration",
             "analytics": "/api/analytics",
             "scoring": "/api/scoring",
-            "audit": "/api/audit"
+            "audit": "/api/audit",
+            "ml": "/api/ml"
         }
     }
 

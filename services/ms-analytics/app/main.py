@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import scaling_router, indicators_router, scoring_router
+from app.routers import scaling_router, indicators_router, scoring_router, analytics_router
 from app.infrastructure.database import engine, Base
 from app.domain import models
 
@@ -12,6 +12,7 @@ app = FastAPI(
 app.include_router(scaling_router, prefix="/analytics", tags=["Analytics"])
 app.include_router(indicators_router, prefix="/analytics", tags=["Analytics"])
 app.include_router(scoring_router, prefix="/scoring", tags=["Scoring"])
+app.include_router(analytics_router, prefix="/analytics", tags=["Analytics"])
 
 
 @app.get("/health")

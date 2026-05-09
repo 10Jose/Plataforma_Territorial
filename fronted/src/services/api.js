@@ -248,6 +248,45 @@ export const api = {
       body: JSON.stringify({ zone_codes: zoneCodes })
     });
     return handleResponse(response);
+  },
+
+  // ========== MACHINE LEARNING ==========
+  async trainModel(config = {}) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/ml/train`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(config)
+    });
+    return handleResponse(response);
+  },
+  async predictZone(zoneCode) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/ml/predict/${zoneCode}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getMLExperiments() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/ml/experiments`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getMLPredictions(zoneCode = null) {
+    const token = localStorage.getItem('token');
+    let url = `${API_URL}/api/ml/predictions`;
+    if (zoneCode) url += `?zone_code=${zoneCode}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
   }
 
 };

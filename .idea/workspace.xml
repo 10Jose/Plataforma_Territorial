@@ -4,40 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="Sprint 2 HU10 -  completa">
+    <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="Sprint 3 completo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/core/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/core/security.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bff/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/routers/indicators.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/indicators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/services/analytics_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/analytics_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bff/app/services/base_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/base_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/ml_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ml_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fronted/src/components/IndicatorsTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/IndicatorsTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fronted/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/services/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/core/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/domain/interfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/domain/interfaces.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/domain/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/domain/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/routers/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/indicators.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/routers/indicators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/scaling.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/routers/scaling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/scoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/routers/scoring.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/analytics_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/analytics_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/ranking.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/competition_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/competition_classifier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/indicators_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/indicators_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/scaled_data_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/scaled_data_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/scaling_execution_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/scaling_execution_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/scaling_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/scaling_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-audit/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-audit/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-audit/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-configuration/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/ms-configuration/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-configuration/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/scoring_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/scoring_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/routers/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/routers/sync.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/services/sync_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/services/sync_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/services/zone_transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/services/zone_transformer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776214070352</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Sprint 3 completo">
+      <option name="closed" value="true" />
+      <created>1777233006710</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777233006710</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -256,7 +250,8 @@
     <MESSAGE value="Modificaciones adicionales" />
     <MESSAGE value="Implementación SOLID" />
     <MESSAGE value="Sprint 2 HU10 -  completa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sprint 2 HU10 -  completa" />
+    <MESSAGE value="Sprint 3 completo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sprint 3 completo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

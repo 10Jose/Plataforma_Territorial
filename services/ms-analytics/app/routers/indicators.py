@@ -60,7 +60,7 @@ async def get_indicators(
                 "income": i.income_indicator,
                 "education": i.education_indicator,
                 "competition": i.competition_indicator,
-                "competition_level": service.get_competition_level(i.competition_indicator),
+                "competition_level": i.competition_level or service.get_competition_level(i.competition_indicator),
                 "calculated_at": i.calculated_at.isoformat() if i.calculated_at else None
             }
             for i in indicators
