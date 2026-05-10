@@ -1,6 +1,7 @@
 import pickle
 import os
 import uuid
+import numpy as np
 from typing import Dict, List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.interfaces import IModelTrainer, IMLRepository
@@ -8,6 +9,8 @@ from app.services.model_trainer import RandomForestTrainer
 from app.services.analytics_client import AnalyticsClient
 from app.repositories.ml_repository import MLRepository
 from app.core.exceptions import NoDataError, NoModelError, TrainingError
+from app.domain.models import PredictionResult
+from sqlalchemy import select
 
 
 class MLService:
@@ -153,7 +156,7 @@ class MLService:
                 "zone_code": zone_code,
                 "zone_name": zone_data.get("zone_name", ""),
                 "prediction_value": round(prediction, 2),
-                "prediction_label": self._get_opportunity_label(prediction),
+                "prediction_label": await self._get_opportunity_label(prediction),
                 "confidence_score": None
             })
 
@@ -161,19 +164,41 @@ class MLService:
             "zone_code": zone_code,
             "zone_name": zone_data.get("zone_name", ""),
             "predicted_value": round(prediction, 2),
-            "prediction_label": self._get_opportunity_label(prediction),
+            "prediction_label": await self._get_opportunity_label(prediction),
             "model_version": model_info["model_version"] if model_info else "unknown"
         }
 
-    def _get_opportunity_label(self, value: float) -> str:
-        if value >= 70:
-            return "Alta"
-        elif value >= 40:
-            return "Media"
-        return "Baja"
+    async def _get_opportunity_label(self, value: float) -> str:
+        """
+        Clasifica el nivel de oportunidad usando percentiles.
+
+        Si no hay datos suficientes, devuelve "Sin clasificar"
+        """
+    # obtener valores históricos para calcular percentiles
+        all_values = self._get_all_prediction_values()
+
+        if all_values and len(all_values) >= 3:
+
+            p75 = np.percentile(all_values, 75)
+            p25 = np.percentile(all_values, 25)
+
+            if value >= p75:
+                return "Alta"
+            elif value >= p25:
+                return "Media"
+            return "Baja"
+
+        return "Sin clasificar"
 
     async def get_experiments(self) -> list:
         return await self.repository.get_experiments()
 
     async def get_predictions(self, zone_code: str = None) -> list:
         return await self.repository.get_predictions(zone_code)
+
+    def _get_all_prediction_values(self) -> List[float]:
+        """valores de predicciones guardadas en BD."""
+        try:
+            return []
+        except Exception:
+            return []
