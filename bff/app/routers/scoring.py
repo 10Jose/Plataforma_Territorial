@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Optional, List
 from pydantic import BaseModel
+from fastapi.responses import StreamingResponse
+from io import BytesIO
 from app.services.scoring_client import ScoringClient
 from app.routers.auth import get_current_user
 from app.domain.models import User
@@ -106,3 +108,62 @@ async def compare_zones(
         return result
     except Exception as e:
         raise HTTPException(500, detail=f"Error al comparar zonas: {str(e)}")
+
+@router.get("/combined/{zone_code}")
+async def get_combined_analysis(
+        zone_code: str,
+        current_user: User = Depends(get_current_user)
+):
+    """Análisis combinado: score real + predicción ML."""
+    try:
+        client = ScoringClient()
+        result = await client.get_combined_analysis(zone_code)
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al obtener análisis combinado: {str(e)}")
+
+
+@router.get("/combined/stats")
+async def get_combined_stats(
+        current_user: User = Depends(get_current_user)
+):
+    """Obtiene estadísticas del Score Combinado IA."""
+    try:
+        client = ScoringClient()
+        result = await client.get_combined_stats()
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al obtener estadísticas IA: {str(e)}")
+
+@router.get("/recommendations/{zone_code}")
+async def get_zone_recommendations(
+        zone_code: str,
+        current_user: User = Depends(get_current_user)
+):
+    """Obtiene recomendaciones explicadas para una zona."""
+    try:
+        client = ScoringClient()
+        result = await client.get_zone_recommendations(zone_code)
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al obtener recomendaciones: {str(e)}")
+
+@router.get("/recommendations/{zone_code}/pdf")
+async def download_recommendations_pdf(
+        zone_code: str,
+        current_user: User = Depends(get_current_user)
+):
+    """Descarga la guía de acción en PDF."""
+    try:
+        client = ScoringClient()
+        pdf_bytes = await client.download_recommendations_pdf(zone_code)
+
+        return StreamingResponse(
+            BytesIO(pdf_bytes),
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"attachment; filename=guia_accion_{zone_code}.pdf"
+            }
+        )
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al descargar PDF: {str(e)}")

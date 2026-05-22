@@ -9,6 +9,18 @@ const RankingTable = () => {
   const [filter, setFilter] = useState('all');
   const [showTop10, setShowTop10] = useState(true);
 
+  const downloadCSV = (csv, filename) => {
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const loadRanking = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -27,6 +39,23 @@ const RankingTable = () => {
   useEffect(() => {
     loadRanking();
   }, [loadRanking]);
+
+  const handleExportRanking = () => {
+    if (!ranking.length) {
+        setError('No hay datos para exportar. Calcula el scoring primero.');
+        return;
+      }
+
+    let csv = 'Posición,Zona,Score,Oportunidad,Población,Ingreso,Educación\n';
+
+    ranking.forEach(item => {
+      csv += `${item.rank_position},${item.zone_name},${item.score.toFixed(1)},${item.opportunity_level},`;
+      csv += `+${item.contributions?.population || 0},+${item.contributions?.income || 0},`;
+      csv += `+${item.contributions?.education || 0}\n`;
+    });
+
+    downloadCSV(csv, `ranking_${new Date().toISOString().slice(0, 10)}.csv`);
+  };
 
   const getOpportunityClass = (level) => {
     if (level === 'Alta') return 'opportunity-high';
@@ -48,7 +77,6 @@ const RankingTable = () => {
     return position;
   };
 
-  // Datos para gráfico de barras
   const chartData = ranking.slice(0, 10);
   const maxScore = Math.max(...chartData.map(d => d.score), 1);
 
@@ -72,6 +100,13 @@ const RankingTable = () => {
           </p>
         </div>
         <div className="ranking-controls">
+          <button
+            className="btn-export"
+            onClick={handleExportRanking}
+          >
+            <span className="material-symbols-outlined">download</span>
+            Exportar CSV
+          </button>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -158,7 +193,7 @@ const RankingTable = () => {
                       </span>
                     </td>
                     <td className="zone-name">{item.zone_name}</td>
-                    <td className="text-right score-value">{item.score.toFixed(1)}</td>
+                    <td className="text-right score-value" style={{ fontSize: '1.10rem' }}>{item.score.toFixed(1)}</td>
                     <td className="text-center">
                       <span className={`opportunity-badge ${getOpportunityClass(item.opportunity_level)}`}>
                         {item.opportunity_level}

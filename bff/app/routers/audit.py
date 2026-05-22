@@ -70,3 +70,15 @@ async def get_audit_stats(
         return result  # ✅ Sin response_model para evitar validación estricta
     except Exception as e:
         raise HTTPException(500, detail=f"Error al obtener estadísticas: {str(e)}")
+
+@router.get("/stats/detailed")
+async def get_detailed_stats(
+        current_user: User = Depends(get_current_user)
+):
+    """Obtiene estadísticas detalladas de auditoría."""
+    try:
+        client = AuditClient()
+        result = await client.get_detailed_stats()
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al obtener estadísticas detalladas: {str(e)}")

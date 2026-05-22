@@ -6,7 +6,35 @@
   <component name="ChangeListManager">
     <list default="true" id="6749340c-b89b-42e3-b7c2-d9546d07ff81" name="Changes" comment="Sprint 3 completo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/audit.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/audit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/ml.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/ml.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/routers/scoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/routers/scoring.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/audit_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/audit_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/ml_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/ml_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bff/app/services/scoring_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/bff/app/services/scoring_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/AuditPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/AuditPanel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/styles/FileUploadModern.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/FileUploadModern.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/IndicatorsTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/IndicatorsTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/MLPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/MLPanel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/RankingTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/RankingTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/ScoringTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/ScoringTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/components/ZoneComparison.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/components/ZoneComparison.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/styles/AuditPanel.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/styles/AuditPanel.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/styles/MLPanel.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/styles/MLPanel.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/styles/ScoringTable.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/styles/ScoringTable.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fronted/src/styles/ZoneComparison.css" beforeDir="false" afterPath="$PROJECT_DIR$/fronted/src/styles/ZoneComparison.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/routers/scoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/routers/scoring.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/app/services/scoring_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/app/services/scoring_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-analytics/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-analytics/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-audit/app/routers/audit.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-audit/app/routers/audit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/repositories/ml_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/app/repositories/ml_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/routers/ml.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/app/routers/ml.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-ml/app/services/analytics_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/app/services/analytics_client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/ms-ml/app/services/ml_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-ml/app/services/ml_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ms-transformation/app/routers/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/ms-transformation/app/routers/zones.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +111,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\fronted\src\styles" />
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\services\ms-audit\app\services" />
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\services" />
       <recent name="C:\Users\jljos\OneDrive\Escritorio\plataforma_territorial\ms-analytics" />
@@ -231,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778369151861</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Sprint 3 completo">
+      <option name="closed" value="true" />
+      <created>1778371586892</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1778371586892</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

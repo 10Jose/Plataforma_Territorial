@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import './FileUploadModern.css';
+import React, { useState, useRef, useEffect } from 'react';
+import '../styles/FileUploadModern.css';
 import ZonesList from './ZonesList';
 import IndicatorsTable from './IndicatorsTable';
 import ConfigurationPanel from './ConfigurationPanel';
@@ -8,10 +8,13 @@ import ScoringTable from './ScoringTable';
 import RankingTable from './RankingTable';
 import AuditPanel from './AuditPanel';
 import ZoneComparison from './ZoneComparison';
+import DashboardHome from './DashboardHome';
+import Sidebar from './Sidebar';
+import RecommendationsPanel from './RecommendationsPanel';
 import MLPanel from './MLPanel';
 
 const FileUploadModern = () => {
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' o 'indicators'
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -20,6 +23,15 @@ const FileUploadModern = () => {
   const [refreshZones, setRefreshZones] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Listener para cambio de pestaña desde el Dashboard
+  useEffect(() => {
+    const handleChangeTab = (event) => {
+      setActiveTab(event.detail);
+    };
+    window.addEventListener('changeTab', handleChangeTab);
+    return () => window.removeEventListener('changeTab', handleChangeTab);
+  }, []);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -95,243 +107,154 @@ const FileUploadModern = () => {
     fileInputRef.current.click();
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
+
   return (
-    <div className="min-h-screen">
-      {/* Header con pestañas */}
-      <header className="header">
-        <nav className="nav">
-          <div className="logo">Plataforma Territorial</div>
-          <div className="nav-tabs">
-            <button
-              className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
-              onClick={() => setActiveTab('dashboard')}
-            >
-              <span className="material-symbols-outlined">dashboard</span>
-              Dashboard
-            </button>
-            <button
-              className={`tab-button ${activeTab === 'indicators' ? 'active' : ''}`}
-              onClick={() => setActiveTab('indicators')}
-            >
-              <span className="material-symbols-outlined">analytics</span>
-              Indicadores
-            </button>
+    <div className="min-h-screen flex">
+      {/* Sidebar - Barra lateral */}
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLogout={handleLogout}
+      />
 
-            <button
-                className={`tab-button ${activeTab === 'configuration' ? 'active' : ''}`}
-                onClick={() => setActiveTab('configuration')}
-            >
-               <span className="material-symbols-outlined">tune</span>
-               Configuración
-            </button>
+      {/*  margen para la sidebar */}
+      <div className="flex-1 ml-[260px]">
+        {/* Header simplificado */}
 
-             <button
-                className={`tab-button ${activeTab === 'scoring' ? 'active' : ''}`}
-                onClick={() => setActiveTab('scoring')}
-             >
-                <span className="material-symbols-outlined">score</span>
-                Scoring
-             </button>
 
-             <button
-                className={`tab-button ${activeTab === 'ranking' ? 'active' : ''}`}
-                onClick={() => setActiveTab('ranking')}
-             >
-                <span className="material-symbols-outlined">leaderboard</span>
-                Ranking
-             </button>
+        {/* Main Content */}
+        <main className="main-content">
+          <div className="container">
+            {/* ========== DASHBOARD TAB ========== */}
+            {activeTab === 'dashboard' && (
+              <>
+                <DashboardHome />
 
-             <button
-               className={`tab-button ${activeTab === 'audit' ? 'active' : ''}`}
-               onClick={() => setActiveTab('audit')}
-             >
-               <span className="material-symbols-outlined">history</span>
-               Auditoría
-             </button>
+                <div className="hero" style={{ marginTop: '2rem' }}>
+                  <h1>Analítica Territorial</h1>
+                  <p>Carga tu archivo CSV con datos territoriales y obtén análisis inteligentes para tu negocio.</p>
+                </div>
 
-             <button
-               className={`tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
-               onClick={() => setActiveTab('comparison')}
-             >
-               <span className="material-symbols-outlined">compare</span>
-               Comparación
-             </button>
-
-             <button
-               className={`tab-button ${activeTab === 'ml' ? 'active' : ''}`}
-               onClick={() => setActiveTab('ml')}
-             >
-               <span className="material-symbols-outlined">model_training</span>
-               ML
-             </button>
-
-          </div>
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="main-content">
-        <div className="container">
-          {/* ========== DASHBOARD TAB ========== */}
-          {activeTab === 'dashboard' && (
-            <>
-              {/* Hero */}
-              <div className="hero">
-                <h1>Analítica Territorial</h1>
-                <p>Carga tu archivo CSV con datos territoriales y obtén análisis inteligentes para tu negocio.</p>
-              </div>
-
-              {/* Upload Zone */}
-              <form onSubmit={handleSubmit}>
-                <div
-                  className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
-                >
-                  <div className="upload-content">
-                    <div className="icon-circle">
-                      <span className="material-symbols-outlined upload-icon">cloud_upload</span>
-                    </div>
-                    <div>
-                      <div className="upload-text">
-                        {file ? file.name : 'Arrastra y suelta tu archivo .csv aquí'}
+                <form onSubmit={handleSubmit}>
+                  <div
+                    className={`upload-zone ${dragActive ? 'drag-active' : ''}`}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                  >
+                    <div className="upload-content">
+                      <div className="icon-circle">
+                        <span className="material-symbols-outlined upload-icon">cloud_upload</span>
                       </div>
-                      <div className="upload-subtext">
-                        {file ? `${(file.size / 1024).toFixed(2)} KB` : 'o haz clic en el botón para buscar'}
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="primary-button"
-                      onClick={triggerFileInput}
-                      disabled={loading}
-                    >
-                      <span className="material-symbols-outlined">upload_file</span>
-                      {loading ? 'Subiendo...' : 'Seleccionar archivo'}
-                    </button>
-                  </div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileChange}
-                    className="hidden-input"
-                    disabled={loading}
-                  />
-                </div>
-
-                {file && (
-                  <div className="flex-center mt-6">
-                    <button type="submit" disabled={loading} className="submit-button">
-                      {loading ? 'Procesando...' : 'Subir archivo'}
-                    </button>
-                  </div>
-                )}
-              </form>
-
-              {/* Meta Info */}
-              <div className="meta-info">
-                <span className="badge">Formatos soportados: .csv</span>
-                <span className="separator">•</span>
-                <span className="size-info">Tamaño máximo: 25MB</span>
-              </div>
-
-              {/* Mensaje de sincronización */}
-              {syncing && (
-                <div className="syncing-message">
-                  <span className="material-symbols-outlined">sync</span>
-                  Sincronizando zonas con el servidor...
-                </div>
-              )}
-
-              {/* Error Display */}
-              {error && (
-                <div className="error-message">
-                  <strong>Error:</strong> {error}
-                </div>
-              )}
-
-              {/* Result Display */}
-              {result && (
-                <div className="success-message">
-                  <h3>{result.status === 'already_loaded' ? '⚠️ Archivo ya cargado' : '✅ Carga exitosa:'}</h3>
-                  <p><strong>Archivo:</strong> {result.filename}</p>
-                  <p><strong>ID:</strong> {result.id}</p>
-                  <p><strong>Total filas:</strong> {result.rows}</p>
-                  <p><strong>Filas válidas:</strong> {result.valid_rows}</p>
-                  <p><strong>Filas inválidas:</strong> {result.invalid_rows}</p>
-                  {result.message && <p><strong>Mensaje:</strong> {result.message}</p>}
-
-                  {result.errors && result.errors.length > 0 && (
-                    <div className="error-summary">
-                      <details>
-                        <summary>⚠️ Ver errores detallados ({result.errors.length} fila(s) con problemas)</summary>
-                        <div className="error-container">
-                          {result.errors.map((err, idx) => (
-                            <div key={idx} className="error-item">
-                              <div className="error-title">🔴 Fila {err.row + 1}</div>
-                              <ul className="error-list">
-                                {err.errors.map((error, i) => <li key={i}>{error}</li>)}
-                              </ul>
-                              <details>
-                                <summary className="error-data-summary">📄 Mostrar datos originales</summary>
-                                <pre className="error-data-pre">{JSON.stringify(err.row_data, null, 2)}</pre>
-                              </details>
-                            </div>
-                          ))}
+                      <div>
+                        <div className="upload-text">
+                          {file ? file.name : 'Arrastra y suelta tu archivo .csv aquí'}
                         </div>
-                      </details>
+                        <div className="upload-subtext">
+                          {file ? `${(file.size / 1024).toFixed(2)} KB` : 'o haz clic en el botón para buscar'}
+                        </div>
+                      </div>
+                      <button type="button" className="primary-button" onClick={triggerFileInput} disabled={loading}>
+                        <span className="material-symbols-outlined">upload_file</span>
+                        {loading ? 'Subiendo...' : 'Seleccionar archivo'}
+                      </button>
+                    </div>
+                    <input ref={fileInputRef} type="file" accept=".csv" onChange={handleFileChange} className="hidden-input" disabled={loading} />
+                  </div>
+                  {file && (
+                    <div className="flex-center mt-6">
+                      <button type="submit" disabled={loading} className="submit-button">
+                        {loading ? 'Procesando...' : 'Subir archivo'}
+                      </button>
                     </div>
                   )}
-                  <details style={{ marginTop: '1rem' }}>
-                    <summary className="json-summary">📦 Ver respuesta JSON completa</summary>
-                    <pre className="json-pre">{JSON.stringify(result, null, 2)}</pre>
-                  </details>
+                </form>
+
+                <div className="meta-info">
+                  <span className="badge">Formatos soportados: .csv</span>
+                  <span className="separator">•</span>
+                  <span className="size-info">Tamaño máximo: 25MB</span>
                 </div>
-              )}
 
-              {/* Lista de zonas */}
-              <ZonesList refreshTrigger={refreshZones} />
-            </>
-          )}
+                {syncing && (
+                  <div className="syncing-message">
+                    <span className="material-symbols-outlined">sync</span>
+                    Sincronizando zonas con el servidor...
+                  </div>
+                )}
 
-          {/* ========== INDICADORES TAB ========== */}
-          {activeTab === 'indicators' && (
-            <IndicatorsTable />
-          )}
-          {activeTab === 'configuration' && (
-             <ConfigurationPanel />
-          )}
+                {error && (
+                  <div className="error-message">
+                    <strong>Error:</strong> {error}
+                  </div>
+                )}
 
-          {activeTab === 'scoring' && <ScoringTable />}
-          {activeTab === 'ranking' && <RankingTable />}
-          {activeTab === 'audit' && <AuditPanel />}
-          {activeTab === 'comparison' && <ZoneComparison />}
-          {activeTab === 'ml' && <MLPanel />}
+                {result && (
+                  <div className="success-message">
+                    <h3>{result.status === 'already_loaded' ? '⚠️ Archivo ya cargado' : '✅ Carga exitosa:'}</h3>
+                    <p><strong>Archivo:</strong> {result.filename}</p>
+                    <p><strong>ID:</strong> {result.id}</p>
+                    <p><strong>Total filas:</strong> {result.rows}</p>
+                    <p><strong>Filas válidas:</strong> {result.valid_rows}</p>
+                    <p><strong>Filas inválidas:</strong> {result.invalid_rows}</p>
+                    {result.message && <p><strong>Mensaje:</strong> {result.message}</p>}
+                    {result.errors && result.errors.length > 0 && (
+                      <div className="error-summary">
+                        <details>
+                          <summary>⚠️ Ver errores detallados ({result.errors.length} fila(s) con problemas)</summary>
+                          <div className="error-container">
+                            {result.errors.map((err, idx) => (
+                              <div key={idx} className="error-item">
+                                <div className="error-title">🔴 Fila {err.row + 1}</div>
+                                <ul className="error-list">{err.errors.map((error, i) => <li key={i}>{error}</li>)}</ul>
+                                <details>
+                                  <summary className="error-data-summary">📄 Mostrar datos originales</summary>
+                                  <pre className="error-data-pre">{JSON.stringify(err.row_data, null, 2)}</pre>
+                                </details>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      </div>
+                    )}
+                    <details style={{ marginTop: '1rem' }}>
+                      <summary className="json-summary">📦 Ver respuesta JSON completa</summary>
+                      <pre className="json-pre">{JSON.stringify(result, null, 2)}</pre>
+                    </details>
+                  </div>
+                )}
 
-        </div>
-      </main>
+                <ZonesList refreshTrigger={refreshZones} />
+              </>
+            )}
 
-      {/* Background Decorations */}
-      <div className="bg-decoration"></div>
-      <div className="bg-decoration-left"></div>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="copyright">© 2026 Todos los derechos reservados.</div>
-          <div className="footer-links">
-            <button onClick={() => alert('Política de Privacidad - Próximamente')} className="link-button">
-              Política de Privacidad
-            </button>
-            <button onClick={() => alert('Términos de Servicio - Próximamente')} className="link-button">
-              Términos de Servicio
-            </button>
+            {activeTab === 'indicators' && <IndicatorsTable />}
+            {activeTab === 'configuration' && <ConfigurationPanel />}
+            {activeTab === 'scoring' && <ScoringTable />}
+            {activeTab === 'ranking' && <RankingTable />}
+            {activeTab === 'audit' && <AuditPanel />}
+            {activeTab === 'comparison' && <ZoneComparison />}
+            {activeTab === 'ml' && <MLPanel />}
+            {activeTab === 'recommendations' && <RecommendationsPanel />}
           </div>
-        </div>
-      </footer>
+        </main>
+
+        {/* Footer */}
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="copyright">© 2026 Todos los derechos reservados.</div>
+            <div className="footer-links">
+              <button onClick={() => alert('Política de Privacidad - Próximamente')} className="link-button">Política de Privacidad</button>
+              <button onClick={() => alert('Términos de Servicio - Próximamente')} className="link-button">Términos de Servicio</button>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };

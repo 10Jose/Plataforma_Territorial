@@ -1,5 +1,6 @@
 from app.services.base_client import BaseClient
 import os
+import httpx
 from typing import Optional, List, Dict
 
 
@@ -43,3 +44,24 @@ class ScoringClient(BaseClient):
     async def compare_zones(self, zone_codes: List[str]) -> Dict:
         """Compara múltiples zonas."""
         return await self.post("/scoring/compare", {"zone_codes": zone_codes})
+
+    async def get_combined_analysis(self, zone_code: str) -> Dict:
+        """Obtiene análisis combinado score + predicción."""
+        return await self.get(f"/scoring/combined/{zone_code}")
+
+    async def get_combined_stats(self) -> Dict:
+        """Obtiene estadísticas del Score Combinado IA."""
+        return await self.get("/scoring/combined/stats")
+
+    async def get_zone_recommendations(self, zone_code: str) -> Dict:
+        """Obtiene recomendaciones para una zona."""
+        return await self.get(f"/scoring/recommendations/{zone_code}")
+
+    async def download_recommendations_pdf(self, zone_code: str) -> bytes:
+        """Descarga la guía de acción en PDF."""
+
+    async def download_recommendations_pdf(self, zone_code: str) -> bytes:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(f"{self.base_url}/scoring/recommendations/{zone_code}/pdf")
+            response.raise_for_status()
+            return response.content

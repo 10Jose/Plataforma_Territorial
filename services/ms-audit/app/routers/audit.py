@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends, Query
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, List
 from pydantic import BaseModel
-from datetime import datetime
-
+from datetime import datetime, timedelta
+from sqlalchemy import func
 from app.infrastructure.database import get_db
 from app.repositories.audit_repository import AuditRepository
 from app.services.audit_service import AuditService
 from app.domain.interfaces import AuditEventData
+from app.domain.models import AuditEvent
 
 router = APIRouter()
 
@@ -89,3 +91,55 @@ async def get_audit_stats(
 ):
     """Obtiene estadísticas de auditoría."""
     return await service.get_stats()
+
+@router.get("/stats/detailed")
+async def get_detailed_stats(
+        db: AsyncSession = Depends(get_db)
+):
+    """Obtiene estadísticas detalladas de auditoría."""
+
+    # Total de eventos
+    total_result = await db.execute(select(func.count()).select_from(AuditEvent))
+    total = total_result.scalar() or 0
+
+    # Tasa de éxito
+    success_result = await db.execute(
+        select(func.count()).select_from(AuditEvent).where(AuditEvent.status == 'success')
+    )
+    success_count = success_result.scalar() or 0
+    error_count = total - success_count
+
+    # Eventos por día (últimos 7 días)
+    seven_days_ago = datetime.utcnow() - timedelta(days=7)
+    all_events = await db.execute(
+        select(AuditEvent)
+        .where(AuditEvent.created_at >= seven_days_ago)
+        .order_by(AuditEvent.created_at)
+    )
+    events_list = all_events.scalars().all()
+
+    daily_dict = {}
+    for event in events_list:
+        day = event.created_at.strftime('%Y-%m-%d')
+        daily_dict[day] = daily_dict.get(day, 0) + 1
+
+    daily = [{"date": day, "count": count} for day, count in daily_dict.items()]
+
+    # Último evento
+    last_result = await db.execute(
+        select(AuditEvent).order_by(AuditEvent.created_at.desc()).limit(1)
+    )
+    last_event = last_result.scalar_one_or_none()
+
+    return {
+        "total_events": total,
+        "success_rate": round((success_count / total * 100), 2) if total > 0 else 0,
+        "success_count": success_count,
+        "error_count": error_count,
+        "daily_events": daily,
+        "last_event": {
+            "service": last_event.service_name if last_event else None,
+            "event": last_event.event_type if last_event else None,
+            "date": last_event.created_at.isoformat() if last_event else None
+        } if last_event else None
+    }

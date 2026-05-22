@@ -16,6 +16,18 @@ const IndicatorsTable = () => {
     incomeUnit: 'Anual'
   });
 
+  const downloadCSV = (csv, filename) => {
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const fetchIndicators = async () => {
     setLoading(true);
     setError(null);
@@ -47,7 +59,6 @@ const IndicatorsTable = () => {
       await new Promise(resolve => setTimeout(resolve, 300));
       await fetchIndicators();
     } catch (err) {
-      // Si es "No hay datos", se muestra vista vacía
       if (err.message.includes('No hay datos') || err.message.includes('404')) {
         setIndicators([]);
         setStats({
@@ -63,6 +74,23 @@ const IndicatorsTable = () => {
     } finally {
       setRefreshing(false);
     }
+  };
+
+  const handleExportIndicators = () => {
+    if (!indicators.length) {
+        setError('No hay datos para exportar. Actualiza los indicadores primero.');
+        return;
+      }
+
+    let csv = 'Zona,Población,Ingreso,Educación,Competencia,Nivel,Fecha\n';
+
+    indicators.forEach(item => {
+      csv += `${item.zone_name},${item.population},${item.income},${item.education},`;
+      csv += `${item.competition},${item.competition_level || 'Baja'},`;
+      csv += `${new Date(item.calculated_at).toLocaleDateString()}\n`;
+    });
+
+    downloadCSV(csv, `indicadores_${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
   useEffect(() => {
@@ -124,10 +152,19 @@ const IndicatorsTable = () => {
           <h1 className="indicators-title">Datos Procesados</h1>
           <p className="indicators-subtitle">Visualización detallada de la segmentación demográfica por región.</p>
         </div>
-        <button onClick={refreshIndicators} className="refresh-data-button" disabled={refreshing}>
-          <span className="material-symbols-outlined">refresh</span>
-          {refreshing ? 'Actualizando...' : 'Actualizar'}
-        </button>
+        <div className="indicators-header-actions">
+          <button
+            className="btn-export"
+            onClick={handleExportIndicators}
+          >
+            <span className="material-symbols-outlined">download</span>
+            Exportar CSV
+          </button>
+          <button onClick={refreshIndicators} className="refresh-data-button" disabled={refreshing}>
+            <span className="material-symbols-outlined">refresh</span>
+            {refreshing ? 'Actualizando...' : 'Actualizar'}
+          </button>
+        </div>
       </div>
 
       {/* Stats Overview */}

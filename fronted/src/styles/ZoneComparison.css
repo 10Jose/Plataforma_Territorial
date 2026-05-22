@@ -350,3 +350,115 @@
   color: #ffffff;
   font-variation-settings: 'FILL' 1, 'wght' 300;
 }
+
+/* Estilos de letra consistentes */
+.comparison-container {
+  font-family: 'Manrope', 'Plus Jakarta Sans', sans-serif;
+}
+
+.comparison-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.comparison-subtitle {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.section-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.metric-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* Filas IA */
+.ia-row {
+  background: #f8fafc;
+}
+
+.ia-value {
+  font-weight: 700;
+  color: #006944;
+}
+
+.prediction-label-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.diff-positive {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.diff-negative {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.confidence-alta { color: #10b981; font-weight: 600; }
+.confidence-media { color: #f59e0b; font-weight: 600; }
+.confidence-baja { color: #ef4444; font-weight: 600; }
+
+/* Empty state */
+.empty-comparison {
+  text-align: center;
+  padding: 4rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.empty-comparison .material-symbols-outlined {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.empty-comparison h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.empty-comparison p {
+  font-family: 'Manrope', sans-serif;
+  color: #64748b;
+}
+
+.ia-row td {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 0.75rem 1rem;
+  text-align: center;
+}
+
+.ia-value {
+  color: #006944 !important;
+  font-size: 1.1rem !important;
+}
+
+.comparison-table td {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #f1f5f9;
+}

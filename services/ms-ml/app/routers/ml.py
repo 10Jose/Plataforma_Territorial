@@ -90,3 +90,51 @@ async def get_predictions(
         return await service.get_predictions(zone_code)
     except Exception as e:
         raise HTTPException(500, detail=f"Error interno: {str(e)}")
+
+@router.post("/predict/all")
+async def predict_all_zones(
+        service: MLService = Depends(get_ml_service)
+):
+    """Predice el potencial de todas las zonas."""
+    try:
+        result = await service.predict_all_zones()
+        return result
+    except NoModelError as e:
+        raise HTTPException(404, detail=e.detail)
+    except NoDataError as e:
+        raise HTTPException(404, detail=e.detail)
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error interno: {str(e)}")
+
+@router.get("/predictions/stats")
+async def get_prediction_stats(
+        service: MLService = Depends(get_ml_service)
+):
+    """Obtiene estadísticas de predicciones vs scores reales."""
+    try:
+        stats = await service.get_prediction_stats()
+        return stats
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error interno: {str(e)}")
+
+@router.delete("/predictions")
+async def clear_predictions(
+        service: MLService = Depends(get_ml_service)
+):
+    """Limpia todas las predicciones guardadas."""
+    try:
+        await service.clear_predictions()
+        return {"status": "completed", "message": "Predicciones eliminadas"}
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error interno: {str(e)}")
+
+@router.get("/predictions/compare/{zone_code}")
+async def compare_prediction(
+        zone_code: str,
+        service: MLService = Depends(get_ml_service)
+):
+    try:
+        result = await service.compare_prediction(zone_code)
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error interno: {str(e)}")

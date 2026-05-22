@@ -9,7 +9,22 @@ const MLPanel = () => {
   const [predictionResult, setPredictionResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [modelStatus, setModelStatus] = useState(null);
+  const [predictingAll, setPredictingAll] = useState(false);
+  const [clearing, setClearing] = useState(false);
+
+  const downloadCSV = (csv, filename) => {
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     loadData();
@@ -27,7 +42,7 @@ const MLPanel = () => {
       setZones(scoresData || []);
       setModelStatus(expData && expData.length > 0 ? expData[0] : null);
     } catch (err) {
-      // Silencioso - puede no haber modelo entrenado aún
+      // Silencioso
     } finally {
       setLoading(false);
     }
@@ -54,6 +69,64 @@ const MLPanel = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePredictAll = async () => {
+    setPredictingAll(true);
+    setError(null);
+    setSuccessMessage(null);
+    try {
+      const result = await api.predictAllZones();
+      setSuccessMessage(`${result.zones_processed} zonas procesadas`);
+      setTimeout(() => setSuccessMessage(null), 2500);
+      await loadData();
+    } catch (err) {
+      setError('Error: ' + err.message);
+    } finally {
+      setPredictingAll(false);
+    }
+  };
+
+  const handleClearPredictions = async () => {
+
+    if (!predictions.length) {
+        setError('No hay datos por eliminar. Genera predicciones primero.');
+        return;
+    }
+
+    if (!window.confirm('¿Estás seguro de eliminar todas las predicciones?')) {
+      return;
+    }
+    setClearing(true);
+    setError(null);
+    setSuccessMessage(null);
+    try {
+      await api.clearPredictions();
+      setSuccessMessage('Predicciones eliminadas correctamente');
+      setTimeout(() => setSuccessMessage(null), 3000);
+      await loadData();
+    } catch (err) {
+      setError('Error al limpiar predicciones: ' + err.message);
+    } finally {
+      setClearing(false);
+    }
+  };
+
+  const handleExportPredictions = () => {
+    if (!predictions.length) {
+        setError('No hay datos para exportar. Genera predicciones primero.');
+        return;
+    }
+
+    let csv = 'Zona,Predicción ML,Clasificación,Score Real\n';
+
+    predictions.forEach(pred => {
+      const zone = zones.find(z => z.zone_code === pred.zone_code);
+      csv += `${pred.zone_name},${pred.prediction_value?.toFixed(1)},${pred.prediction_label},`;
+      csv += `${zone?.score?.toFixed(1) || 'N/A'}\n`;
+    });
+
+    downloadCSV(csv, `predicciones_ml_${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
   const getOpportunityClass = (label) => {
@@ -85,11 +158,44 @@ const MLPanel = () => {
             Estima el potencial territorial usando inteligencia artificial
           </p>
         </div>
-        <button className="btn-refresh" onClick={handleRefresh}>
-          <span className="material-symbols-outlined">refresh</span>
-          Actualizar
-        </button>
+        <div className="ml-header-actions">
+          <button
+            className="btn-export"
+            onClick={handleExportPredictions}
+          >
+            <span className="material-symbols-outlined">download</span>
+            Exportar CSV
+          </button>
+          <button
+            className="btn-predict-all"
+            onClick={handlePredictAll}
+            disabled={predictingAll}
+          >
+            <span className="material-symbols-outlined">auto_awesome</span>
+            {predictingAll ? 'Prediciendo...' : 'Predecir Todas'}
+          </button>
+          <button
+            className="btn-clear-predictions"
+            onClick={handleClearPredictions}
+            disabled={clearing}
+          >
+            <span className="material-symbols-outlined">delete_sweep</span>
+            {clearing ? 'Limpiando...' : 'Limpiar'}
+          </button>
+          <button className="btn-refresh" onClick={handleRefresh}>
+            <span className="material-symbols-outlined">refresh</span>
+            Actualizar
+          </button>
+        </div>
       </div>
+
+      {/* Success Message */}
+      {successMessage && (
+        <div className="success-message">
+          <span className="material-symbols-outlined">check_circle</span>
+          {successMessage}
+        </div>
+      )}
 
       {/* Estado del modelo */}
       {modelStatus && (
@@ -165,7 +271,6 @@ const MLPanel = () => {
             )}
           </div>
 
-          {/* Info card */}
           <div className="ml-card info-card">
             <span className="material-symbols-outlined info-icon">lightbulb</span>
             <div>

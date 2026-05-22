@@ -55,3 +55,7 @@ class AuditClient(BaseClient):
             raise Exception(f"Timeout conectando a ms-audit")
         except Exception as e:
             raise Exception(f"Error en petición a ms-audit: {str(e)}")
+
+    async def get_detailed_stats(self) -> Dict:
+        """Obtiene estadísticas detalladas de auditoría."""
+        return await self.get("/audit/stats/detailed")

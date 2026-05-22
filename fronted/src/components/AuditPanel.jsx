@@ -9,12 +9,26 @@ const AuditPanel = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState({ serviceName: '', eventType: '' });
   const [selectedTrace, setSelectedTrace] = useState(null);
+  const [detailedStats, setDetailedStats] = useState(null);
   const [traceEvents, setTraceEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  const downloadCSV = (csv, filename) => {
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   useEffect(() => {
     loadData();
+    loadDetailedStats();
   }, []);
 
   const loadData = async () => {
@@ -31,6 +45,16 @@ const AuditPanel = () => {
       setError(err.message || 'Error al cargar datos de auditoría');
     } finally {
       setLoading(false);
+    }
+  };
+
+
+  const loadDetailedStats = async () => {
+    try {
+      const stats = await api.getDetailedAuditStats();
+      setDetailedStats(stats);
+    } catch (err) {
+      // Silencioso
     }
   };
 
@@ -53,12 +77,28 @@ const AuditPanel = () => {
   const handleViewTrace = async (traceId) => {
     try {
       const data = await api.getAuditTrace(traceId);
-      console.log('Trace data:', data);
       setTraceEvents(data || []);
       setSelectedTrace(traceId);
     } catch (err) {
       setError(err.message || 'Error al cargar traza');
     }
+  };
+
+  const handleExportAudit = () => {
+    if (!events.length) {
+        setError('No hay datos para exportar. No se han registrado eventos aún.');
+        return;
+      }
+
+    let csv = 'Fecha,Servicio,Evento,Usuario,Estado,Trace ID\n';
+
+    events.forEach(event => {
+      csv += `${formatDate(event.created_at)},${getServiceLabel(event.service_name)},`;
+      csv += `${getEventTypeLabel(event.event_type)},${event.username || '-'},`;
+      csv += `${event.status === 'success' ? 'Éxito' : 'Error'},${event.trace_id}\n`;
+    });
+
+    downloadCSV(csv, `auditoria_${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
   const formatDate = (dateString) => {
@@ -110,14 +150,9 @@ const AuditPanel = () => {
     return labels[serviceName] || serviceName;
   };
 
-  // Paginación
   const totalPages = Math.ceil(events.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedEvents = events.slice(startIndex, startIndex + itemsPerPage);
-
-  // Opciones únicas para filtros
-  const uniqueServices = [...new Set(events.map(e => e.service_name))];
-  const uniqueEventTypes = [...new Set(events.map(e => e.event_type))];
 
   if (loading && events.length === 0) {
     return (
@@ -138,10 +173,19 @@ const AuditPanel = () => {
             Registro de todas las operaciones del sistema
           </p>
         </div>
-        <button className="btn-refresh" onClick={loadData}>
-          <span className="material-symbols-outlined">refresh</span>
-          Actualizar
-        </button>
+        <div className="audit-header-actions">
+          <button
+            className="btn-export"
+            onClick={handleExportAudit}
+          >
+            <span className="material-symbols-outlined">download</span>
+            Exportar CSV
+          </button>
+          <button className="btn-refresh" onClick={loadData}>
+            <span className="material-symbols-outlined">refresh</span>
+            Actualizar
+          </button>
+        </div>
       </div>
 
       {/* Stats Summary */}
@@ -166,6 +210,55 @@ const AuditPanel = () => {
         </div>
       )}
 
+    {/* Estadísticas Detalladas */}
+     {detailedStats && (
+       <div className="audit-detailed-stats">
+         <div className="detailed-stat-card">
+           <div className="detailed-stat-icon" style={{ background: '#d1fae5' }}>
+             <span className="material-symbols-outlined" style={{ color: '#10b981' }}>check_circle</span>
+           </div>
+           <span className="detailed-stat-label">Tasa de Éxito</span>
+           <span className="detailed-stat-value" style={{ color: detailedStats.success_rate > 90 ? '#10b981' : '#f59e0b' }}>
+             {detailedStats.success_rate}%
+           </span>
+           <span className="detailed-stat-subtext">Operaciones exitosas</span>
+         </div>
+
+         <div className="detailed-stat-card">
+           <div className="detailed-stat-icon" style={{ background: '#dbeafe' }}>
+             <span className="material-symbols-outlined" style={{ color: '#3b82f6' }}>thumb_up</span>
+           </div>
+           <span className="detailed-stat-label">Eventos Exitosos</span>
+           <span className="detailed-stat-value" style={{ color: '#3b82f6' }}>{detailedStats.success_count}</span>
+           <span className="detailed-stat-subtext">Sin errores</span>
+         </div>
+
+         <div className="detailed-stat-card">
+           <div className="detailed-stat-icon" style={{ background: '#fee2e2' }}>
+             <span className="material-symbols-outlined" style={{ color: '#ef4444' }}>warning</span>
+           </div>
+           <span className="detailed-stat-label">Eventos con Error</span>
+           <span className="detailed-stat-value" style={{ color: detailedStats.error_count > 0 ? '#ef4444' : '#10b981' }}>
+             {detailedStats.error_count}
+           </span>
+           <span className="detailed-stat-subtext">{detailedStats.error_count > 0 ? 'Requieren atención' : 'Todo en orden'}</span>
+         </div>
+
+         {detailedStats.last_event && (
+           <div className="detailed-stat-card">
+             <div className="detailed-stat-icon" style={{ background: '#ede9fe' }}>
+               <span className="material-symbols-outlined" style={{ color: '#7c3aed' }}>schedule</span>
+             </div>
+             <span className="detailed-stat-label">Último Evento</span>
+             <span className="detailed-stat-value" style={{ fontSize: '0.8rem' }}>
+               {detailedStats.last_event.service}
+             </span>
+             <span className="detailed-stat-subtext">{detailedStats.last_event.event}</span>
+           </div>
+         )}
+       </div>
+     )}
+
       {/* Error */}
       {error && (
         <div className="error-message">
@@ -183,8 +276,8 @@ const AuditPanel = () => {
         >
           <option value="">Todos los servicios</option>
           {[...new Set(events.map(e => e.service_name).filter(Boolean))].map(service => (
-                <option key={service} value={service}>{getServiceLabel(service)}</option>
-              ))}
+            <option key={service} value={service}>{getServiceLabel(service)}</option>
+          ))}
         </select>
         <select
           className="filter-select"
@@ -193,8 +286,8 @@ const AuditPanel = () => {
         >
           <option value="">Todos los eventos</option>
           {[...new Set(events.map(e => e.event_type).filter(Boolean))].map(type => (
-                <option key={type} value={type}>{getEventTypeLabel(type)}</option>
-              ))}
+            <option key={type} value={type}>{getEventTypeLabel(type)}</option>
+          ))}
         </select>
         <button className="btn-filter" onClick={handleFilter}>
           <span className="material-symbols-outlined">filter_alt</span>
@@ -263,24 +356,13 @@ const AuditPanel = () => {
             </table>
           </div>
 
-          {/* Paginación */}
           {totalPages > 1 && (
             <div className="pagination">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="pagination-btn"
-              >
+              <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="pagination-btn">
                 <span className="material-symbols-outlined">chevron_left</span>
               </button>
-              <span className="pagination-info">
-                Página {currentPage} de {totalPages}
-              </span>
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="pagination-btn"
-              >
+              <span className="pagination-info">Página {currentPage} de {totalPages}</span>
+              <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="pagination-btn">
                 <span className="material-symbols-outlined">chevron_right</span>
               </button>
             </div>
@@ -288,7 +370,6 @@ const AuditPanel = () => {
         </>
       )}
 
-      {/* Modal de Traza */}
       {selectedTrace && (
         <div className="modal-overlay" onClick={() => { setSelectedTrace(null); setTraceEvents([]); }}>
           <div className="modal-content trace-modal" onClick={(e) => e.stopPropagation()}>
@@ -314,9 +395,7 @@ const AuditPanel = () => {
                         <div>
                           <strong>{getServiceLabel(event.service_name)}</strong> - {getEventTypeLabel(event.event_type)}
                           {event.details_json && (
-                            <pre className="trace-json">
-                              {JSON.stringify(event.details_json, null, 2)}
-                            </pre>
+                            <pre className="trace-json">{JSON.stringify(event.details_json, null, 2)}</pre>
                           )}
                         </div>
                       </div>

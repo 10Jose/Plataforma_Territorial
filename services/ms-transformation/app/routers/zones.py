@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, desc
+from sqlalchemy import select, func, desc, distinct
 from app.infrastructure.database import get_db
 from app.domain.models import TransformedZoneData, TransformationRun
 import time
@@ -51,24 +51,29 @@ async def get_zones(
 @router.get("/data")
 async def get_zones_data(
         db: AsyncSession = Depends(get_db),
-        run_id: int = Query(None, description="ID del transformation run (opcional)")
+        run_id: int = Query(None)
 ):
     """Devuelve datos completos de las zonas para análisis."""
 
-    # Si no se especifica run_id, usar el último
-    if run_id is None:
-        latest_run = await db.execute(
-            select(TransformationRun.id).order_by(desc(TransformationRun.id)).limit(1)
+    if run_id is not None:
+        # Si se especifica run_id, filtrar por ese
+        result = await db.execute(
+            select(TransformedZoneData)
+            .where(TransformedZoneData.transformation_run_id == run_id)
+            .order_by(TransformedZoneData.zone_name)
         )
-        run_id = latest_run.scalar()
-        if run_id is None:
-            return []
+    else:
+        subquery = select(
+            TransformedZoneData.zone_code,
+            func.max(TransformedZoneData.id).label('max_id')
+        ).group_by(TransformedZoneData.zone_code).subquery()
 
-    result = await db.execute(
-        select(TransformedZoneData)
-        .where(TransformedZoneData.transformation_run_id == run_id)
-        .order_by(TransformedZoneData.zone_name)
-    )
+        result = await db.execute(
+            select(TransformedZoneData)
+            .join(subquery, TransformedZoneData.id == subquery.c.max_id)
+            .order_by(TransformedZoneData.zone_name)
+        )
+
     zones = result.scalars().all()
 
     return [

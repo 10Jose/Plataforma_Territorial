@@ -38,3 +38,15 @@ class AnalyticsClient:
         except Exception as e:
             logger.error(f"Error obteniendo datos de zona {zone_code}: {e}")
             raise
+
+
+    async def get_all_scores(self) -> List[Dict]:
+        """Obtiene todos los scores desde ms-analytics."""
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.get(f"{self.base_url}/scoring/scores")
+                response.raise_for_status()
+                return response.json()
+        except Exception as e:
+            logger.error(f"Error obteniendo scores: {e}")
+            return []

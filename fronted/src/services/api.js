@@ -287,6 +287,61 @@ export const api = {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     return handleResponse(response);
+  },
+
+  async predictAllZones() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/ml/predict/all`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    return handleResponse(response);
+  },
+
+  async clearPredictions() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/ml/predictions`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return handleResponse(response);
+  },
+
+  async getCombinedAnalysis(zoneCode) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/scoring/combined/${zoneCode}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getCombinedStats() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/scoring/combined/stats`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getZoneRecommendations(zoneCode) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/scoring/recommendations/${zoneCode}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
+  },
+
+  async getDetailedAuditStats() {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/audit/stats/detailed`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return handleResponse(response);
   }
 
 };

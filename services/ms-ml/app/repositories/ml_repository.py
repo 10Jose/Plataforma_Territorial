@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from app.domain.models import MLExperiment, TrainedModel, PredictionResult
 from app.domain.interfaces import IMLRepository
+from sqlalchemy import delete
 
 
 class MLRepository(IMLRepository):
@@ -86,3 +87,8 @@ class MLRepository(IMLRepository):
             stmt = stmt.where(PredictionResult.zone_code == zone_code)
         result = await self.db.execute(stmt)
         return result.scalars().all()
+
+    async def clear_predictions(self) -> None:
+        """Limpia todas las predicciones."""
+        await self.db.execute(delete(PredictionResult))
+        await self.db.commit()

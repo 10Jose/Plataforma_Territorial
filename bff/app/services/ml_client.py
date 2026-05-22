@@ -27,3 +27,11 @@ class MLClient(BaseClient):
         if zone_code:
             return await self.get(f"/ml/predictions?zone_code={zone_code}")
         return await self.get("/ml/predictions")
+
+    async def predict_all_zones(self) -> Dict:
+        """Predice todas las zonas."""
+        return await self.post("/ml/predict/all")
+
+    async def clear_predictions(self) -> Dict:
+        """Limpia todas las predicciones."""
+        return await self.delete("/ml/predictions")

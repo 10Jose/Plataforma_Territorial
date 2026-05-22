@@ -44,7 +44,7 @@ body {
 /* Header */
 .header {
   width: 100%;
-  position: sticky;
+  position: static;
   top: 0;
   padding: 1.5rem 2.5rem;
   background-color: var(--surface-container-low);
@@ -966,4 +966,25 @@ indicators-title {
 .tab-button.active {
   background-color: var(--primary, #006944);
   color: white;
+}
+
+.header-top {
+  background: white;
+  position: sticky;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1rem 2rem;
+  top: 0;
+  z-index: 30;
+}
+
+.logo-text {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #006944;
+}
+
+/* Ajustar el main content para la sidebar */
+.main-content {
+  padding-top: 0;
 }

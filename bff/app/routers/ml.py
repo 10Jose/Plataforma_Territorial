@@ -94,3 +94,27 @@ async def get_predictions(
         return result
     except Exception as e:
         raise HTTPException(500, detail=f"Error al obtener predicciones: {str(e)}")
+
+@router.post("/predict/all")
+async def predict_all_zones(
+        current_user: User = Depends(get_current_user)
+):
+    """Predice potencial de todas las zonas."""
+    try:
+        client = MLClient()
+        result = await client.predict_all_zones()
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al predecir todas las zonas: {str(e)}")
+
+@router.delete("/predictions")
+async def clear_predictions(
+        current_user: User = Depends(get_current_user)
+):
+    """Limpia todas las predicciones."""
+    try:
+        client = MLClient()
+        result = await client.clear_predictions()
+        return result
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error al limpiar predicciones: {str(e)}")

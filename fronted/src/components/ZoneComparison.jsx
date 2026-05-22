@@ -12,6 +12,7 @@ const ZoneComparison = () => {
   const [comparisonResult, setComparisonResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [combinedScores, setCombinedScores] = useState({});
 
   useEffect(() => {
     loadAvailableZones();
@@ -49,6 +50,7 @@ const ZoneComparison = () => {
     try {
       const result = await api.compareZones(selectedZones);
       setComparisonResult(result);
+      await loadCombinedForComparison(selectedZones);
     } catch (err) {
       setError(err.message || 'Error al comparar zonas');
     } finally {
@@ -59,12 +61,28 @@ const ZoneComparison = () => {
   const handleClearSelection = () => {
     setSelectedZones([]);
     setComparisonResult(null);
+    setCombinedScores({});
   };
 
   const getOpportunityClass = (level) => {
     if (level === 'Alta') return 'opportunity-high';
     if (level === 'Media') return 'opportunity-medium';
     return 'opportunity-low';
+  };
+
+  const loadCombinedForComparison = async (zoneCodes) => {
+    try {
+      const combined = {};
+      for (const code of zoneCodes) {
+        const data = await api.getCombinedAnalysis(code);
+        if (data && data.score_combinado_ia !== undefined) {
+          combined[code] = data;
+        }
+      }
+      setCombinedScores(combined);
+    } catch (err) {
+      // Silencioso
+    }
   };
 
   const getScoreClass = (score) => {
@@ -77,9 +95,12 @@ const ZoneComparison = () => {
     if (!comparisonResult) return;
 
     let csv = 'Métrica,' + comparisonResult.zones.map(z => z.zone_name).join(',') + '\n';
-
     csv += 'Score,' + comparisonResult.zones.map(z => z.score.toFixed(1)).join(',') + '\n';
     csv += 'Oportunidad,' + comparisonResult.zones.map(z => z.opportunity_level).join(',') + '\n';
+    csv += 'Score Combinado IA,' + comparisonResult.zones.map(z => combinedScores[z.zone_code]?.score_combinado_ia?.toFixed(1) || 'N/A').join(',') + '\n';
+    csv += 'Predicción ML,' + comparisonResult.zones.map(z => combinedScores[z.zone_code]?.prediction_ml?.toFixed(1) || 'N/A').join(',') + '\n';
+    csv += 'Diferencia,' + comparisonResult.zones.map(z => combinedScores[z.zone_code]?.difference?.toFixed(1) || 'N/A').join(',') + '\n';
+    csv += 'Confianza,' + comparisonResult.zones.map(z => combinedScores[z.zone_code]?.confidence || 'N/A').join(',') + '\n';
     csv += 'Población (contrib),' + comparisonResult.zones.map(z => z.population_contribution.toFixed(1)).join(',') + '\n';
     csv += 'Ingreso (contrib),' + comparisonResult.zones.map(z => z.income_contribution.toFixed(1)).join(',') + '\n';
     csv += 'Educación (contrib),' + comparisonResult.zones.map(z => z.education_contribution.toFixed(1)).join(',') + '\n';
@@ -89,12 +110,21 @@ const ZoneComparison = () => {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `comparacion_zonas_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute('download', `comparacion_zonas_${new Date().toISOString().slice(0, 10)}.csv`);
     link.click();
   };
 
   const radarData = comparisonResult?.radar_data || [];
   const zoneColors = ['#006944', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'];
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner-large"></div>
+        <p>Cargando comparación...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="comparison-container">
@@ -103,7 +133,7 @@ const ZoneComparison = () => {
         <div>
           <h1 className="comparison-title">Comparación de Zonas</h1>
           <p className="comparison-subtitle">
-            Selecciona de 2 a 5 zonas para comparar sus métricas
+            Selecciona de 2 a 5 zonas para comparar sus métricas con predicción ML
           </p>
         </div>
         <div className="comparison-actions">
@@ -126,9 +156,9 @@ const ZoneComparison = () => {
 
       {/* Zona de selección */}
       <div className="selection-section">
-        <h3>Zonas disponibles</h3>
+        <h3 className="section-title">Zonas disponibles</h3>
         <p className="selection-hint">
-          Seleccionadas: {selectedZones.length} / 5
+          Seleccionadas: <strong>{selectedZones.length}</strong> / 5
         </p>
         <div className="zones-grid">
           {availableZones.map(zone => (
@@ -137,8 +167,8 @@ const ZoneComparison = () => {
               className={`zone-chip ${selectedZones.includes(zone.code) ? 'selected' : ''}`}
               onClick={() => handleZoneSelect(zone.code)}
             >
-              <span className="zone-code">{zone.code}</span>
-              <span className="zone-name">{zone.name}</span>
+              <span className="zone-chip-code">{zone.code}</span>
+              <span className="zone-chip-name">{zone.name}</span>
               {selectedZones.includes(zone.code) && (
                 <span className="material-symbols-outlined check-icon">check_circle</span>
               )}
@@ -167,7 +197,7 @@ const ZoneComparison = () => {
         <div className="results-section">
           {/* Gráfico de Radar */}
           <div className="radar-section">
-            <h3>Perfil Comparativo</h3>
+            <h3 className="section-title">Perfil Comparativo</h3>
             <div className="radar-chart-container">
               <ResponsiveContainer width="100%" height={350}>
                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
@@ -205,7 +235,7 @@ const ZoneComparison = () => {
 
           {/* Tabla comparativa */}
           <div className="table-section">
-            <h3>Tabla Comparativa</h3>
+            <h3 className="section-title">Tabla Comparativa</h3>
             <div className="table-container">
               <table className="comparison-table">
                 <thead>
@@ -219,15 +249,78 @@ const ZoneComparison = () => {
                 <tbody>
                   {/* Score */}
                   <tr>
-                    <td className="metric-label">Score</td>
+                    <td className="metric-label">Score Real</td>
                     {comparisonResult.zones.map(zone => {
                       const isBest = zone.score === comparisonResult.best_values.score.value;
                       return (
-                        <td
-                          key={zone.zone_code}
-                          className={`${isBest ? 'best-value' : ''} ${getScoreClass(zone.score)}`}
-                        >
+                        <td key={zone.zone_code} className={`${isBest ? 'best-value' : ''} ${getScoreClass(zone.score)}`}>
                           {zone.score.toFixed(1)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* Score Combinado IA */}
+                  <tr className="ia-row">
+                    <td className="metric-label">
+                      Score Combinado IA
+                      <span className="tooltip-wrapper">
+                        <span className="material-symbols-outlined tooltip-icon">help</span>
+                        <span className="tooltip-content">Score Real (60%) + Predicción ML (40%)</span>
+                      </span>
+                    </td>
+                    {comparisonResult.zones.map(zone => {
+                        const combined = combinedScores[zone.zone_code];
+                        const value = combined?.score_combinado_ia;
+                        console.log(`Buscando ${zone.zone_code}:`, combined);
+                        console.log('Keys de combinedScores:', Object.keys(combinedScores));
+                        return (
+                            <td key={zone.zone_code} style={{
+                              fontWeight: 700,
+                              fontSize: '1.1rem',
+                              color: combined ? '#006944' : '#94a3b8',
+                              textAlign: 'center',
+                              padding: '0.75rem'
+                            }}>
+                              {value?.toFixed(1) || '-'}
+                            </td>
+                      );
+                    })}
+                  </tr>
+                  {/* Predicción ML */}
+                  <tr className="ia-row">
+                    <td className="metric-label">Predicción ML</td>
+                    {comparisonResult.zones.map(zone => {
+                      const combined = combinedScores[zone.zone_code];
+                      return (
+                        <td key={zone.zone_code}>
+                          {combined?.prediction_ml?.toFixed(1) || '-'}
+                          <br />
+                          <span className="prediction-label-text">{combined?.prediction_label || ''}</span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* Diferencia */}
+                  <tr className="ia-row">
+                    <td className="metric-label">Diferencia (Real vs ML)</td>
+                    {comparisonResult.zones.map(zone => {
+                      const combined = combinedScores[zone.zone_code];
+                      const diff = combined?.difference;
+                      return (
+                        <td key={zone.zone_code} className={diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : ''}>
+                          {diff?.toFixed(1) || '-'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {/* Confianza */}
+                  <tr className="ia-row">
+                    <td className="metric-label">Confianza IA</td>
+                    {comparisonResult.zones.map(zone => {
+                      const combined = combinedScores[zone.zone_code];
+                      return (
+                        <td key={zone.zone_code} className={`confidence-${combined?.confidence?.toLowerCase() || 'none'}`}>
+                          {combined?.confidence || '-'}
                         </td>
                       );
                     })}
@@ -261,7 +354,7 @@ const ZoneComparison = () => {
                     {comparisonResult.zones.map(zone => {
                       const isBest = zone.income_contribution === comparisonResult.best_values.income.value;
                       return (
-                        <td key={zone.zone_code} className={isBest ? 'best-value positive' : 'positive'}>
+                        <td key={zone.zone_code}  className={isBest ? 'best-value positive' : 'positive'} >
                           +{zone.income_contribution.toFixed(1)}
                         </td>
                       );
@@ -298,7 +391,7 @@ const ZoneComparison = () => {
 
           {/* Resumen de mejores valores */}
           <div className="best-summary">
-            <h3>Mejores valores por métrica</h3>
+            <h3 className="section-title">Mejores valores por métrica</h3>
             <div className="best-grid">
               <div className="best-card">
                 <span className="best-label">Mejor Score</span>
@@ -327,6 +420,14 @@ const ZoneComparison = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {!comparisonResult && !loading && (
+        <div className="empty-comparison">
+          <span className="material-symbols-outlined">compare</span>
+          <h3>Selecciona zonas para comparar</h3>
+          <p>Elige al menos 2 zonas y haz clic en "Comparar Zonas"</p>
         </div>
       )}
     </div>

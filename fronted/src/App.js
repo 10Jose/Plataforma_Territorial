@@ -56,23 +56,29 @@ const AuthContainer = () => {
 };
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
-  return (
-    <div>
-      <div style={{ backgroundColor: '#0d9488', color: 'white', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Plataforma Analítica Territorial</h1>
-        <div>
-          <span>Welcome, {user?.full_name || user?.username}</span>
-          <button onClick={logout} style={{ marginLeft: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '0.5rem', cursor: 'pointer', color: 'white' }}>Logout</button>
+   return (
+      <div>
+        <div style={{ backgroundColor: '#0d9488', color: 'white', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50 }}>
+          <h1>Plataforma Analítica Territorial</h1>
+          <div>
+            <span style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '1rem',
+              fontWeight: 700,
+              color: '#ffffff'
+            }}>
+              Bienvenido, {user?.full_name || user?.username}
+            </span>
+          </div>
+        </div>
+        <div style={{ padding: '1.5rem' }}>
+          <FileUploadModern />
         </div>
       </div>
-      <div style={{ padding: '1.5rem' }}>
-        <FileUploadModern />
-      </div>
-    </div>
-  );
-};
+    );
+  };
 
 function App() {
   return (
